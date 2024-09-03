@@ -25,7 +25,7 @@ Takes in 2D array of pointers and size of array
 Should create structs and populate the array
 */
 void initCells(Cell* board[][10],/*parameters*/ int boardSize)
-{  
+{//my attempt  
     for (int i = 0; i < boardSize; ++i)
      {
         for (int j = 0; j < boardSize; ++j) 
@@ -41,8 +41,6 @@ void initCells(Cell* board[][10],/*parameters*/ int boardSize)
             board[i][j]->state = 0;  // default set here
         }
     }
-}
-
 }
 
 /*
