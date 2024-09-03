@@ -4,6 +4,7 @@ If you create the individual cells on the heap, you must add
 the cleanup code inside of main.cpp (this is the only acceptable
 modification to main.cpp). Do not add any libraries to any file!
 */
+// create structs 
 
 /*
 Function to clear terminal depending on OS
@@ -23,8 +24,24 @@ Function to initialize all cells in the board.
 Takes in 2D array of pointers and size of array
 Should create structs and populate the array
 */
-void initCells(Cell* board[][10], int boardSize)
-{
+void initCells(Cell* board[][10],/*parameters*/ int boardSize)
+{  
+    for (int i = 0; i < boardSize; ++i)
+     {
+        for (int j = 0; j < boardSize; ++j) 
+        {
+            // Allocate a new Cell on the heap
+            board[i][j] = new Cell();
+            
+            // Initialize the cell's position
+            board[i][j]->x = i;
+            board[i][j]->y = j;
+            
+            // Initialize the cell's state (dead = 0, alive = 1)
+            board[i][j]->state = 0;  // default set here
+        }
+    }
+}
 
 }
 
