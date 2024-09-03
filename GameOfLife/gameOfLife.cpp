@@ -1,4 +1,9 @@
 #include "gameOfLife.h"
+/* You are only allowed to modify gameOfLife.cpp functions. 
+If you create the individual cells on the heap, you must add 
+the cleanup code inside of main.cpp (this is the only acceptable
+modification to main.cpp). Do not add any libraries to any file!
+*/
 
 /*
 Function to clear terminal depending on OS
