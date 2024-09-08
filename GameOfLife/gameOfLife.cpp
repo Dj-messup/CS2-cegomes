@@ -25,11 +25,9 @@ Takes in 2D array of pointers and size of array
 Should create structs and populate the array
 */
 void initCells(Cell* board[][10],/*parameters*/ int boardSize)
-{//my attempt  
-    for (int i = 0; i < boardSize; ++i)
-     {
-        for (int j = 0; j < boardSize; ++j) 
-        {
+{
+    for (int i = 0; i < boardSize; ++i) {
+        for (int j = 0; j < boardSize; ++j) {
             // Allocate a new Cell on the heap
             board[i][j] = new Cell();
             
@@ -38,7 +36,7 @@ void initCells(Cell* board[][10],/*parameters*/ int boardSize)
             board[i][j]->y = j;
             
             // Initialize the cell's state (dead = 0, alive = 1)
-            board[i][j]->state = 0;  // default set here
+            board[i][j]->state = 0;  // Default state: dead
         }
     }
 }
@@ -48,9 +46,10 @@ Function to read the board from a file
 Prompt for the file to read inside of the function
 Structure of file should consist of 10 lines of 0 or 1 to indicate cell state
 */
+
 void readBoard(Cell* board[][10], int boardSize) 
 {
-
+    
 }
 
 /*
@@ -67,7 +66,32 @@ Must use the x, y position stored with each cell to determine which neighbors th
 */
 void findNumNeighbors(Cell* board[][10], int boardSize, Cell* curCell) 
 {
+ /* for (int i = 0; boardSize) 
+ {
+        for () 
+        {
+            int numLiveNeighbors = numLiveNeighbors();
 
+            // Apply the rules of the Game of Life
+            if ( numLiveNeighbors == 1) 
+            {
+                // Rule 1: Any live cell with fewer than two live neighbors dies (underpopulation)
+                // Rule 3: Any live cell with more than three live neighbors dies (overpopulation)
+                if (liveNeighbors < 2 || liveNeighbors > 3)
+                {
+                    newGrid[x][y].state = 0;
+                }
+            } else 
+            {
+                // Rule 4: Any dead cell with exactly three live neighbors becomes a live cell (reproduction)
+                if (liveNeighbors == 3) 
+                {
+                    newGrid[x][y].state = 1;
+                }
+            }
+        }
+    }
+    */
 }
 
 /*
