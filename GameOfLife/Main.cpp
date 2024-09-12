@@ -28,13 +28,13 @@ int main(int argc, char* argv[])
 
     // Clean up board if cells were allocated on the heap
     // Clean up dynamically allocated memory for the board
-    for (int i = 0; i < boardSize; ++i) 
-    {
-        for (int j = 0; j < boardSize; ++j) 
-        {
-            delete board[i][j];  // Deallocate each Cell object
-        }
-    }
+    // for (int i = 0; i < boardSize; ++i) 
+    // {
+    //     for (int j = 0; j < boardSize; ++j) 
+    //     {
+    //         delete board[i][j];  // Deallocate each Cell object
+    //     }
+    // }
 
 
     return 0;

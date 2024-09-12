@@ -61,7 +61,8 @@ void readBoard(Cell* board[][10], int boardSize)
     string line;
     for (int i = 0; i < boardSize; ++i) {
         getline(file, line);
-        for (int j = 0; j < boardSize; ++j) {
+        for (int j = 0; j < boardSize; ++j) 
+        {
             if (line[j] == '1') {
                 board[i][j]->state = 1;  // Cell is alive
             } else {
@@ -79,11 +80,19 @@ Function to print out all cells to cout
 */
 void printCells(Cell* board[][10], int boardSize)
 {
-    for (int i = 0; i < boardSize; ++i) {
-        for (int j = 0; j < boardSize; ++j) {
-            cout << (board[i][j]->state ? "1" : "0") << " ";
+    for (int i = 0; i < boardSize; ++i) 
+    {
+        for (int j = 0; j < boardSize; ++j) 
+        {
+            if (board[i][j]->state == 1) 
+            {
+                cout << "1 ";
+            } else 
+            {
+                cout << "0 ";
+            }
         }
-        cout << endl;
+        cout << endl;  // Moved outside inner loop to ensure new line after each row
     }
 }
 
