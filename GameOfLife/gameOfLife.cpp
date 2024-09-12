@@ -13,7 +13,7 @@ void clearScreen()
 {
     // use "cls" in windows and "clear" command in Mac and Linux
     #ifdef _WIN32
-        system("clS");
+        system("cls");
     #else
         system("clear");
     #endif
@@ -24,7 +24,7 @@ Function to initialize all cells in the board.
 Takes in 2D array of pointers and size of array
 Should create structs and populate the array
 */
-void initCells(Cell* board[][10],/*parameters*/ int boardSize)
+void initCells(Cell* board[][10], int boardSize)
 {
     for (int i = 0; i < boardSize; ++i) {
         for (int j = 0; j < boardSize; ++j) {
@@ -34,9 +34,8 @@ void initCells(Cell* board[][10],/*parameters*/ int boardSize)
             // Initialize the cell's position
             board[i][j]->x = i;
             board[i][j]->y = j;
-            
-            // Initialize the cell's state (dead = 0, alive = 1)
-            board[i][j]->state = 0;  // Default state: dead
+            board[i][j]->state = 0;  // Initially, all cells are dead
+            board[i][j]->numLiveNeighbors = 0;
         }
     }
 }
@@ -47,17 +46,45 @@ Prompt for the file to read inside of the function
 Structure of file should consist of 10 lines of 0 or 1 to indicate cell state
 */
 
-void readBoard(Cell* board[][10], int boardSize) 
+void readBoard(Cell* board[][10], int boardSize)
 {
-    
+    string filename;
+    cout << "Enter the filename to read the board: ";
+    cin >> filename;
+
+    ifstream file(filename);
+    if (!file.is_open()) {
+        cout << "Error opening file: " << filename << endl;
+        return;
+    }
+
+    string line;
+    for (int i = 0; i < boardSize; ++i) {
+        getline(file, line);
+        for (int j = 0; j < boardSize; ++j) {
+            if (line[j] == '1') {
+                board[i][j]->state = 1;  // Cell is alive
+            } else {
+                board[i][j]->state = 0;  // Cell is dead
+            }
+        }
+    }
+
+    file.close();
 }
+
 
 /*
 Function to print out all cells to cout
 */
 void printCells(Cell* board[][10], int boardSize)
 {
-
+    for (int i = 0; i < boardSize; ++i) {
+        for (int j = 0; j < boardSize; ++j) {
+            cout << (board[i][j]->state ? "1" : "0") << " ";
+        }
+        cout << endl;
+    }
 }
 
 /*
@@ -66,32 +93,24 @@ Must use the x, y position stored with each cell to determine which neighbors th
 */
 void findNumNeighbors(Cell* board[][10], int boardSize, Cell* curCell) 
 {
- /* for (int i = 0; boardSize) 
- {
-        for () 
-        {
-            int numLiveNeighbors = numLiveNeighbors();
+    int liveNeighbors = 0;
+    int x = curCell->x;
+    int y = curCell->y;
 
-            // Apply the rules of the Game of Life
-            if ( numLiveNeighbors == 1) 
-            {
-                // Rule 1: Any live cell with fewer than two live neighbors dies (underpopulation)
-                // Rule 3: Any live cell with more than three live neighbors dies (overpopulation)
-                if (liveNeighbors < 2 || liveNeighbors > 3)
-                {
-                    newGrid[x][y].state = 0;
-                }
-            } else 
-            {
-                // Rule 4: Any dead cell with exactly three live neighbors becomes a live cell (reproduction)
-                if (liveNeighbors == 3) 
-                {
-                    newGrid[x][y].state = 1;
-                }
+    for (int i = -1; i <= 1; ++i) {
+        for (int j = -1; j <= 1; ++j) {
+            if (i == 0 && j == 0) continue; // Skip the current cell
+            
+            int newX = x + i;
+            int newY = y + j;
+            
+            if (newX >= 0 && newX < boardSize && newY >= 0 && newY < boardSize) {
+                liveNeighbors += board[newX][newY]->state;
             }
         }
     }
-    */
+
+    curCell->numLiveNeighbors = liveNeighbors;
 }
 
 /*
@@ -107,5 +126,48 @@ Return if you updated cells or not to break out of while loop from main.
 */
 bool updateCellState(Cell* board[][10], int boardSize) 
 {
-    return false;
+    bool updated = false;
+    Cell* newBoard[10][10];
+
+    // Initialize new board
+    for (int i = 0; i < boardSize; ++i) {
+        for (int j = 0; j < boardSize; ++j) {
+            newBoard[i][j] = new Cell();
+            newBoard[i][j]->x = i;
+            newBoard[i][j]->y = j;
+            newBoard[i][j]->state = board[i][j]->state;
+        }
+    }
+
+    // Update cell states based on Game of Life rules
+    for (int i = 0; i < boardSize; ++i) {
+        for (int j = 0; j < boardSize; ++j) {
+            findNumNeighbors(board, boardSize, board[i][j]);
+            int liveNeighbors = board[i][j]->numLiveNeighbors;
+
+            if (board[i][j]->state == 1) {
+                // Rules for live cells
+                if (liveNeighbors < 2 || liveNeighbors > 3) {
+                    newBoard[i][j]->state = 0;  // Cell dies
+                    updated = true;
+                }
+            } else {
+                // Rule for dead cells
+                if (liveNeighbors == 3) {
+                    newBoard[i][j]->state = 1;  // Cell becomes alive
+                    updated = true;
+                }
+            }
+        }
+    }
+
+    // Copy new board to original board and delete temporary cells
+    for (int i = 0; i < boardSize; ++i) {
+        for (int j = 0; j < boardSize; ++j) {
+            board[i][j]->state = newBoard[i][j]->state;
+            delete newBoard[i][j];
+        }
+    }
+
+    return updated;
 }
