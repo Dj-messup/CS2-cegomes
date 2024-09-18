@@ -41,7 +41,7 @@ int main(int argc, char* argv[])
          << ") is (" << testPoint->getNearestPoint()->getX() << ", " << testPoint->getNearestPoint()->getY() 
          << ") with a distance of: " << testPoint->distPoints(*testPoint->getNearestPoint()) << "." << endl;
 
-    // Cleanup
+    // Cleanup,destructor of a heap allocated memory of a class
     for(size_t i = 0; i < arrSize; i++)
     {
         delete pointList[i];
