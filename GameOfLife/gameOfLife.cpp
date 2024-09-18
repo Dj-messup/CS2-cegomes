@@ -100,27 +100,72 @@ void printCells(Cell* board[][10], int boardSize)
 Function to count the number of live neighbors for each cell.
 Must use the x, y position stored with each cell to determine which neighbors they have
 */
+
 void findNumNeighbors(Cell* board[][10], int boardSize, Cell* curCell) 
 {
-    int liveNeighbors = 0;
+    // Reset the number of live neighbors
+    curCell->numLiveNeighbors = 0;
+
     int x = curCell->x;
     int y = curCell->y;
 
-    for (int i = -1; i <= 1; ++i) {
-        for (int j = -1; j <= 1; ++j) {
-            if (i == 0 && j == 0) continue; // Skip the current cell
-            
-            int newX = x + i;
-            int newY = y + j;
-            
-            if (newX >= 0 && newX < boardSize && newY >= 0 && newY < boardSize) {
-                liveNeighbors += board[newX][newY]->state;
-            }
+    // Check cell to the upper-left
+    if (x > 0 && y > 0) {
+        if (board[x-1][y-1]->state == 1) {
+            curCell->numLiveNeighbors += 1;
         }
     }
 
-    curCell->numLiveNeighbors = liveNeighbors;
+    // Check cell above
+    if (x > 0) {
+        if (board[x-1][y]->state == 1) {
+            curCell->numLiveNeighbors += 1;
+        }
+    }
+
+    // Check cell to the upper-right
+    if (x > 0 && y < boardSize - 1) {
+        if (board[x-1][y+1]->state == 1) {
+            curCell->numLiveNeighbors += 1;
+        }
+    }
+
+    // Check cell to the left
+    if (y > 0) {
+        if (board[x][y-1]->state == 1) {
+            curCell->numLiveNeighbors += 1;
+        }
+    }
+
+    // Check cell to the right
+    if (y < boardSize - 1) {
+        if (board[x][y+1]->state == 1) {
+            curCell->numLiveNeighbors += 1;
+        }
+    }
+
+    // Check cell to the lower-left
+    if (x < boardSize - 1 && y > 0) {
+        if (board[x+1][y-1]->state == 1) {
+            curCell->numLiveNeighbors += 1;
+        }
+    }
+
+    // Check cell below
+    if (x < boardSize - 1) {
+        if (board[x+1][y]->state == 1) {
+            curCell->numLiveNeighbors += 1;
+        }
+    }
+
+    // Check cell to the lower-right
+    if (x < boardSize - 1 && y < boardSize - 1) {
+        if (board[x+1][y+1]->state == 1) {
+            curCell->numLiveNeighbors += 1;
+        }
+    }
 }
+
 
 /*
 Function to update each cell's state based on number of neighbors
@@ -148,35 +193,78 @@ bool updateCellState(Cell* board[][10], int boardSize)
         }
     }
 
-    // Update cell states based on Game of Life rules
-    for (int i = 0; i < boardSize; ++i) {
-        for (int j = 0; j < boardSize; ++j) {
-            findNumNeighbors(board, boardSize, board[i][j]);
-            int liveNeighbors = board[i][j]->numLiveNeighbors;
+    // // Update cell states based on Game of Life rules
+    // for (int i = 0; i < boardSize; ++i) {
+    //     for (int j = 0; j < boardSize; ++j) {
+    //         findNumNeighbors(board, boardSize, board[i][j]);
+    //         int liveNeighbors = board[i][j]->numLiveNeighbors;
 
-            if (board[i][j]->state == 1) {
-                // Rules for live cells
-                if (liveNeighbors < 2 || liveNeighbors > 3) {
-                    newBoard[i][j]->state = 0;  // Cell dies
-                    updated = true;
-                }
-            } else {
-                // Rule for dead cells
-                if (liveNeighbors == 3) {
-                    newBoard[i][j]->state = 1;  // Cell becomes alive
-                    updated = true;
-                }
-            }
-        }
-    }
+    //         if (board[i][j]->state == 1) {
+    //             // Rules for live cells
+    //             if (liveNeighbors < 2 || liveNeighbors > 3) {
+    //                 newBoard[i][j]->state = 0;  // Cell dies
+    //                 updated = true;
+    //             }
+    //         } else {
+    //             // Rule for dead cells
+    //             if (liveNeighbors == 3) {
+    //                 newBoard[i][j]->state = 1;  // Cell becomes alive
+    //                 updated = true;
+    //             }
+    //         }
+    //     }
+    // }
 
-    // Copy new board to original board and delete temporary cells
-    for (int i = 0; i < boardSize; ++i) {
-        for (int j = 0; j < boardSize; ++j) {
-            board[i][j]->state = newBoard[i][j]->state;
-            delete newBoard[i][j];
-        }
-    }
+    // // Copy new board to original board and delete temporary cells
+    // for (int i = 0; i < boardSize; ++i) {
+    //     for (int j = 0; j < boardSize; ++j) {
+    //         board[i][j]->state = newBoard[i][j]->state;
+    //         delete newBoard[i][j];
+    //     }
+    // }
 
     return updated;
 }
+
+// void readBoard(Cell* board[][10], int boardSize)
+// {
+//     string fileName;
+//     cout << "Please enter the file name of the board you would like to read: ";
+//     cin >> fileName;
+
+//     // Open the file and check if it was successful
+//     ifstream fin(fileName);
+//     if (!fin) {
+//         cerr << "Failed to open file: " << fileName << endl;
+//         return;
+//     }
+
+//     // Use char instead of string to read individual characters
+//     char temp;
+
+//     // Loop through each cell in the board
+//     for (int i = 0; i < boardSize; i++)
+//     {
+//         for (int j = 0; j < boardSize; j++)
+//         {
+//             // Read a single character
+//             fin >> temp;
+
+//             // Check if we've reached the end of the file
+//             if (fin.eof()) break;
+
+//             // Create a new Cell and populate it
+//             Cell* someCell = new Cell();
+//             someCell -> state = temp;
+//             someCell -> x = i;
+//             someCell -> y = j;
+//             board[i][j] = someCell;
+//         }
+
+//         // Check again for EOF after each row
+//         if (fin.eof()) break;
+//     }
+
+//     // Always close the file when done
+//     fin.close();
+// }
