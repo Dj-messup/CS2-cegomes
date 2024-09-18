@@ -42,6 +42,7 @@ namespace points
             and this.
 
             Returns the distance as a double. 
+            the calculation should be one line!!!
             */
             double distPoints(Point&);
     };
