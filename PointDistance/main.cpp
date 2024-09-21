@@ -9,8 +9,10 @@ using namespace std;
 
 size_t getArrSize();
 //  user to input size 0-100
+
 void generatePoints(points::Point*[], size_t);
 //random pts w/ x n y coords -100-100
+
 void printPoints(points::Point*[], size_t);
 points::Point* promptTestPoint();
 void tests();
