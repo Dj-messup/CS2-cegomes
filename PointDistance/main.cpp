@@ -8,7 +8,9 @@
 using namespace std;
 
 size_t getArrSize();
+//  user to input size 0-100
 void generatePoints(points::Point*[], size_t);
+//random pts w/ x n y coords -100-100
 void printPoints(points::Point*[], size_t);
 points::Point* promptTestPoint();
 void tests();
@@ -21,11 +23,12 @@ int main(int argc, char* argv[])
         return 0;
     }
 
-    //Initialize random seed
+    //Initialize random seed produces random values each run
     srand(time(0));
 
     size_t arrSize = 0;
     arrSize = getArrSize();
+    //number of points the user wants to generate
 
     points::Point* pointList[arrSize];
 
@@ -48,6 +51,7 @@ int main(int argc, char* argv[])
         delete pointList[i];
     }
     delete testPoint;
+    //Free memory
 
     return 0;
 }
@@ -60,20 +64,23 @@ void tests()
     size_t arrSize = 10;
 
     points::Point* pointList[arrSize];
+    //random points = same
 
     generatePoints(pointList, arrSize);
     points::Point* test1 = new points::Point(0, 0);
     points::Point* test2 = new points::Point(17, 4);
     points::Point* test3 = new points::Point(-100, 100);
+    //three test pts created
 
     test1->setNearestPoint(test1->calcNearestPoint(pointList, arrSize));
     test2->setNearestPoint(test2->calcNearestPoint(pointList, arrSize));
     test3->setNearestPoint(test3->calcNearestPoint(pointList, arrSize));
+    //nearest pt for pts created
 
     assert(abs(test1->distPoints(*test1->getNearestPoint()) - 17.4642) <= epsilon);
     assert(abs(test2->distPoints(*test2->getNearestPoint()) - 0) <= epsilon);
     assert(abs(test3->distPoints(*test3->getNearestPoint()) - 43.6807) <= epsilon);
-
+    //distance btwn pts w/in epsilon
     cerr << "All test cases passed" << endl;
 
     for(size_t i = 0; i < arrSize; i++)
