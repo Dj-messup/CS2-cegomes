@@ -12,7 +12,7 @@ points::Point::Point(int X, int Y, points::Point* closestPoint)
 //Destructor
 points::Point::~Point()
 {
- // lets fiure out dynamic allocating memory
+ // lets figure out dynamic allocating memory
 }
 
 //Getters
