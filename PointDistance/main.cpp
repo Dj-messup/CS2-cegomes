@@ -5,6 +5,7 @@
 #include <cassert>
 // try not to overload the cout statement and with istream and ostream with fractions when you return os
 // it should just be one line
+
 using namespace std;
 
 size_t getArrSize();
