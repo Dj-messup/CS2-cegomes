@@ -26,4 +26,42 @@ Submit screenshot to D2L of program running
 All code must be uploaded to GitHub
 Follow standard coding styles including adding comments as necessary to clarify complex sections of code*/
 
+/* 
+sample of old code : 
+#include <iostream>
+#include "library.h"
 
+int main() {
+    int choice;
+    do {
+        displayMenu();
+        std::cout << "Enter your choice (1-7): ";
+        std::cin >> choice;
+        switch (choice) {
+            case 1:
+                addBook();
+                break;
+            case 2:
+                removeBook();
+                break;
+            case 3:
+                displayAllBooks();
+                break;
+            case 4:
+                searchBook();
+                break;
+            case 5:
+                borrowBook();
+                break;
+            case 6:
+                returnBook();
+                break;
+            case 7:
+                std::cout << "Exiting the program. Goodbye!" << std::endl;
+                break;
+            default:
+                std::cout << "Invalid choice. Please try again." << std::endl;
+        }
+    } while (choice != 7);
+    return 0;
+}*/
