@@ -4,21 +4,22 @@
 #include <string>
 
 namespace movies {
+    //Movie class with private vars
     class Movie {
     private:
-        std::string imdb_title_id;
-        std::string title;
-        int year;
-        std::string genre;
+        std::string imdb_title_id; // IMDB ID (private vars..)
+        std::string title;         
+        int year;                  
+        std::string genre;         
         double rating;
         std::string director;
-        
+
     public:
-        // Constructor
+        // Constructors
         Movie();
         Movie(const std::string& id, const std::string& title, int year, const std::string& genre, double rating, const std::string& director);
 
-        // Getters
+        // Getters (methods to get private vars)
         std::string getImdbTitleId() const;
         std::string getTitle() const;
         int getYear() const;
@@ -26,7 +27,7 @@ namespace movies {
         double getRating() const;
         std::string getDirector() const;
 
-        // Setters
+        // Setters (methods to set private vars)
         void setImdbTitleId(const std::string& id);
         void setTitle(const std::string& title);
         void setYear(int year);
@@ -35,5 +36,5 @@ namespace movies {
         void setDirector(const std::string& director);
     };
 }
-#endif
 
+#endif

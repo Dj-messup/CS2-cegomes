@@ -2,10 +2,10 @@
 
 namespace movies {
 
-    // Default constructor
+    //Movie with no params
     Movie::Movie() : year(0), rating(0.0) {}
 
-    // Parameterized constructor
+    // Param constructor, Movie vars - id, title, year, genre, rating, director
     Movie::Movie(const std::string& id, const std::string& title, int year, const std::string& genre, double rating, const std::string& director)
         : imdb_title_id(id), title(title), year(year), genre(genre), rating(rating), director(director) {}
 
@@ -25,3 +25,4 @@ namespace movies {
     void Movie::setRating(double rating) { this->rating = rating; }
     void Movie::setDirector(const std::string& director) { this->director = director; }
 }
+

@@ -1,91 +1,94 @@
-#include "database.h"
-#include "movie.h"
+#include "Database.h"  // Database class
+#include "Movie.h"     // Movie class
 #include <iostream>
-
-using namespace movies;
-
-void showMenu() {
-    std::cout << "1. Add Movie" << std::endl;
-    std::cout << "2. Remove Movie" << std::endl;
-    std::cout << "3. Display All Movies" << std::endl;
-    std::cout << "4. Search Movie by Title" << std::endl;
-    std::cout << "5. Search Movie by Genre" << std::endl;
-    std::cout << "6. Save Database to File" << std::endl;
-    std::cout << "7. Exit" << std::endl;
-}
+#include <string>
 
 int main() {
-    Database db("MovieDB", 1);
-    int choice;
+    // create DB object
+    movies::Database db("My Movie Database", 1);
+
+    int choice;  // stores menu choice
     do {
-        showMenu();
+        // Display menu
+        std::cout << "Menu:\n1. Add Movie\n2. Remove Movie\n3. Display All Movies\n4. Search by Title\n5. Search by Genre\n6. Save to File\n7. Exit\n";
+        std::cout << "Enter your choice: ";
         std::cin >> choice;
 
         switch (choice) {
             case 1: {
+                // add movie to DB
                 std::string id, title, genre, director;
                 int year;
                 double rating;
+
                 std::cout << "Enter IMDb ID: ";
                 std::cin >> id;
                 std::cout << "Enter Title: ";
-                std::cin.ignore();
+                std::cin.ignore();  // clear input buffer
                 getline(std::cin, title);
                 std::cout << "Enter Year: ";
                 std::cin >> year;
                 std::cout << "Enter Genre: ";
-                std::cin.ignore();
+                std::cin.ignore();  // clear 
                 getline(std::cin, genre);
                 std::cout << "Enter Rating: ";
                 std::cin >> rating;
                 std::cout << "Enter Director: ";
-                std::cin.ignore();
+                std::cin.ignore();  // clear
                 getline(std::cin, director);
 
-                Movie* newMovie = new Movie(id, title, year, genre, rating, director);
-                db.addMovie(newMovie);
+                // Create movie and add it to the DB
+                movies::Movie* newMovie = new movies::Movie(id, title, year, genre, rating, director);  // req: dynamically alloc Movie obj
+                db.addMovie(newMovie);  // add Movie to DB
                 break;
             }
             case 2: {
+                // remove movie by IMDB ID
                 std::string id;
                 std::cout << "Enter IMDb ID of movie to remove: ";
                 std::cin >> id;
-                db.removeMovie(id);
+                db.removeMovie(id);  //remove Movie from DB by ID
                 break;
             }
             case 3:
-                db.displayAllMovies();
+                // print all movies
+                db.displayAllMovies();  //display Movies in DB
                 break;
             case 4: {
+                // search movie by title
                 std::string title;
                 std::cout << "Enter movie title: ";
-                std::cin.ignore();
+                std::cin.ignore();  // clear
                 getline(std::cin, title);
-                db.searchMoviesByTitle(title);
+                db.searchMoviesByTitle(title); 
                 break;
             }
             case 5: {
+                // search movie by genre
                 std::string genre;
                 std::cout << "Enter movie genre: ";
-                std::cin.ignore();
+                std::cin.ignore();  // clear
                 getline(std::cin, genre);
-                db.searchMoviesByGenre(genre);
+                db.searchMoviesByGenre(genre); 
                 break;
             }
             case 6: {
-                std::string filename;
+                // write DB to file
+                std::string movies.csv;
                 std::cout << "Enter filename to save database: ";
-                std::cin >> filename;
-                db.saveToFile(filename);
+                std::cin >> movies.csv;
+                db.saveToFile(movies.csv);
                 break;
             }
             case 7:
+                // Exit
                 std::cout << "Exiting" << std::endl;
                 break;
             default:
+                // Handle invalid input
                 std::cout << "Invalid option. Please try again." << std::endl;
         }
-    } while (choice != 7);
+    } while (choice != 7);  // loop until user exits
 
     return 0;
 }
