@@ -61,31 +61,35 @@ namespace movies {
     }
 
     // Search by genre
-    void Database::searchMoviesByGenre(const std::string& genre) const {
-        for (int i = 0; i < movieCount; ++i) {
-            if (movieList[i]->getGenre() == genre) {  // Match genre
+    void Database::searchMoviesByGenre(const std::string& genre) const 
+    {
+        for (int i = 0; i < movieCount; ++i) 
+        {
+            if (movieList[i]->getGenre() == genre) 
+            {  // Match genre
                 std::cout << "Found: " << movieList[i]->getTitle() << std::endl;
             }
         }
     }
 
     // Save to CSV file
-    void Database::saveToFile(const std::string& filename) const {
-        std::ofstream outFile(filename);  // Open file for writing
-        if (!outFile) {
-            std::cout << "Error opening file: " << filename << std::endl;
-            return;
-        }
-        for (int i = 0; i < movieCount; ++i) {
-            outFile << movieList[i]->getImdbTitleId() << "," 
-                    << movieList[i]->getTitle() << "," 
-                    << movieList[i]->getYear() << "," 
-                    << movieList[i]->getGenre() << "," 
-                    << movieList[i]->getRating() << "," 
-                    << movieList[i]->getDirector() << std::endl;  // Write movie details to CSV
-        }
-        outFile.close();  // Close the file
-        std::cout << "Database saved to " << filename << std::endl;
+    void Database::saveToNewFile(const std::string& filename) const 
+    {
+    std::ofstream outFile(filename);  // Open the new file for writing
+    if (!outFile) 
+    {
+        std::cout << "Error opening file: " << filename << std::endl;
+        return;
     }
-
+    for (int i = 0; i < movieCount; ++i) {
+        outFile << movieList[i]->getImdbTitleId() << "," 
+                << movieList[i]->getTitle() << "," 
+                << movieList[i]->getYear() << "," 
+                << movieList[i]->getGenre() << "," 
+                << movieList[i]->getRating() << "," 
+                << movieList[i]->getDirector() << std::endl;  // Write movie details to the new CSV
+    }
+    outFile.close();  // Close the file
+    std::cout << "Database saved to " << filename << std::endl;
+    }
 }

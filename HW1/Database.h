@@ -26,7 +26,7 @@ namespace movies {
         void displayAllMovies() const;
         void searchMoviesByTitle(const std::string& title) const;
         void searchMoviesByGenre(const std::string& genre) const;
-        void saveToFile(const std::string& filename) const;
+        void saveToNewFile(const std::string& filename) const;
     };
 }
 
