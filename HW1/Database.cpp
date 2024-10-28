@@ -71,7 +71,7 @@ namespace movies {
 
     // Save to CSV file
     void Database::saveToFile(const std::string& filename) const {
-        std::ofstream outFile(movies.csv);  // Open file for writing
+        std::ofstream outFile(filename);  // Open file for writing
         if (!outFile) {
             std::cout << "Error opening file: " << filename << std::endl;
             return;
