@@ -74,7 +74,7 @@ int main() {
             }
             case 6: {
                 // write DB to file
-                std::string movies.csv;
+                std::string filename;
                 std::cout << "Enter filename to save database: ";
                 std::cin >> movies.csv;
                 db.saveToFile(movies.csv);
