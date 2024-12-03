@@ -8,11 +8,14 @@ namespace movies {
     Database::Database(const std::string& name, int id) : name(name), db_id(id), movieCount(0) {}
 
     // Destructor to free memory
-    Database::~Database() {
-        for (int i = 0; i < movieCount; ++i) {
-            delete movieList[i];  // Free dynamically allocated movies
-        }
+    Database::~Database() 
+    {
+    for (int i = 0; i < movieCount; ++i) {
+        delete movieList[i];
+        movieList[i] = nullptr; // Prevent dangling pointers
     }
+    }
+}
 
     // Add movie to the db (if avail to do so)
     void Database::addMovie(Movie* movie) {
@@ -73,9 +76,10 @@ namespace movies {
     }
 
     // Save to CSV file
-    void Database::saveToNewFile(const std::string& filename) const 
-    {
-    std::ofstream outFile(filename);  // Open the new file for writing
+   void Database::saveToNewFile(const std::string& filename) const
+   {
+    std::string outputFile = filename.empty() ? "movies.csv" : filename;
+    std::ofstream outFile(outputFile);
     if (!outFile) 
     {
         std::cout << "Error opening file: " << filename << std::endl;

@@ -7,7 +7,8 @@ CXXFLAGS = -Wall -std=c++11
 # Target executable
 TARGET = movie_database
 
-# Source files
+# Source filesSRCS = main.cpp Movie.cpp Database.cpp
+OBJS = main.o Movie.o Database.o
 SRCS = SRCS = main.cpp Movie.cpp Movie.h MovieDat.cpp Database.h
 
 
