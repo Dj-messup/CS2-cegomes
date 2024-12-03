@@ -74,7 +74,6 @@ int main() {
             }
             case 6: {
                 // write DB to file
-                std::string filename;
                 std::cout << "Enter filename to save database: ";
                 std::string filename;
                 std::cin >> filename;

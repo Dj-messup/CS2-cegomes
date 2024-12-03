@@ -46,9 +46,12 @@ namespace movies {
     // Display all movies in the db
     void Database::displayAllMovies() const {
         for (int i = 0; i < movieCount; ++i) {
-            std::cout << movieList[i]->getTitle() << " (" << movieList[i]->getYear() 
-                      << "), Genre: " << movieList[i]->getGenre() << ", Rating: " 
-                      << movieList[i]->getRating() << ", Director: " << movieList[i]->getDirector() << std::endl;
+            std::cout << "Title: " << movieList[i]->getTitle() 
+          << "\nYear: " << movieList[i]->getYear()
+          << "\nGenre: " << movieList[i]->getGenre()
+          << "\nRating: " << movieList[i]->getRating()
+          << "\nDirector: " << movieList[i]->getDirector() 
+          << "\n---------------------\n";
         }
     }
 
@@ -94,6 +97,5 @@ namespace movies {
                 << movieList[i]->getDirector() << std::endl;  // Write movie details to the new CSV
     }
     outFile.close();  // Close the file
-    std::cout << "Database saved to " << filename << std::endl;
+    std::cout << "Database saved to " << outputFile << std::endl;
     }
-}
