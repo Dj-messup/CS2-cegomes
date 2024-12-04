@@ -1,62 +1,43 @@
 #pragma once
 
-template <class T1>
-class Node
-{
-    private:
-    T1 _data;
-    Node<T1>* _prev;
-    Node<T1>* _next;
+template <typename T>
+class Node {
+private:
+    T _data;                // Data stored in the node
+    Node<T>* _next;         // Pointer to the next node
 
-    public:
-    Node();
-    void setData(T1);
-    void setPrev(Node<T1>*);
-    void setNext(Node<T1>*);
-    T1 getData();
-    Node<T1>* getPrev();
-    Node<T1>* getNext();
+public:
+    Node(T data, Node<T>* next = nullptr);
+    void setData(T data);
+    void setNext(Node<T>* next);
+    T getData();
+    Node<T>* getNext();
 };
 
-template <class T1>
-Node<T1>::Node()
-{
-    _prev = nullptr;
-    _next = nullptr;
-}
+// Constructor: Initialize a node with data and next pointer
+template <typename T>
+Node<T>::Node(T data, Node<T>* next) : _data(data), _next(next) {}
 
-template <class T1>
-void Node<T1>::setData(T1 data)
-{
+// Set the data stored in the node
+template <typename T>
+void Node<T>::setData(T data) {
     _data = data;
 }
 
-template <class T1>
-void Node<T1>::setPrev(Node<T1>* prev)
-{
-    _prev = prev;
-}
-
-template <class T1>
-void Node<T1>::setNext(Node<T1>* next)
-{
+// Set the next node pointer
+template <typename T>
+void Node<T>::setNext(Node<T>* next) {
     _next = next;
 }
 
-template <class T1>
-T1 Node<T1>::getData()
-{
+// Get the data stored in the node
+template <typename T>
+T Node<T>::getData() {
     return _data;
 }
 
-template <class T1>
-Node<T1>* Node<T1>::getPrev()
-{
-    return _prev;
-}
-
-template <class T1>
-Node<T1>* Node<T1>::getNext()
-{
+// Get the next node pointer
+template <typename T>
+Node<T>* Node<T>::getNext() {
     return _next;
 }
