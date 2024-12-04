@@ -3,40 +3,40 @@
 template <typename T>
 class Node {
 private:
-    T _data;                // Data stored in the node
+    T _data;                // The data in this node
     Node<T>* _next;         // Pointer to the next node
 
 public:
-    Node(T data, Node<T>* next = nullptr);
-    void setData(T data);
-    void setNext(Node<T>* next);
-    T getData();
-    Node<T>* getNext();
+    Node(T data, Node<T>* next = nullptr); // Make a node
+    void setData(T data);                  // Change the data
+    void setNext(Node<T>* next);           // Change the next node
+    T getData();                           // Get the data
+    Node<T>* getNext();                    // Get the next node
 };
 
-// Constructor: Initialize a node with data and next pointer
+// Make a node with some data
 template <typename T>
 Node<T>::Node(T data, Node<T>* next) : _data(data), _next(next) {}
 
-// Set the data stored in the node
+// Change the data in the node
 template <typename T>
 void Node<T>::setData(T data) {
     _data = data;
 }
 
-// Set the next node pointer
+// Change the next pointer
 template <typename T>
 void Node<T>::setNext(Node<T>* next) {
     _next = next;
 }
 
-// Get the data stored in the node
+// Get the data from the node
 template <typename T>
 T Node<T>::getData() {
     return _data;
 }
 
-// Get the next node pointer
+// Get the next node
 template <typename T>
 Node<T>* Node<T>::getNext() {
     return _next;

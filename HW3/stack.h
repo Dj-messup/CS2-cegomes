@@ -6,23 +6,23 @@ using namespace std;
 
 class Stack {
 private:
-    Node<double>* _top;  // Points to the top of the stack
-    size_t stackSize;
+    Node<double>* _top;  // The top of the stack
+    size_t stackSize;    // How many items are in the stack
 
 public:
-    Stack();
-    ~Stack();
-    bool empty();
-    size_t size();
-    void push(double data);
-    double pop();
-    double top();
+    Stack();            // Make a new empty stack
+    ~Stack();           // Delete everything in the stack
+    bool empty();       // Check if the stack is empty
+    size_t size();      // Get how many items are in the stack
+    void push(double);  // Add a number to the stack
+    double pop();       // Remove and get the top number
+    double top();       // Get the top number without removing it
 };
 
-// Constructor: Initialize an empty stack
+// Make an empty stack
 Stack::Stack() : _top(nullptr), stackSize(0) {}
 
-// Destructor: Clean up all stack elements
+// Delete all items in the stack
 Stack::~Stack() {
     while (!empty()) {
         pop();
@@ -34,32 +34,32 @@ bool Stack::empty() {
     return _top == nullptr;
 }
 
-// Get the size of the stack
+// Get how many items are in the stack
 size_t Stack::size() {
     return stackSize;
 }
 
-// Push a new element onto the stack
+// Add a number to the stack
 void Stack::push(double data) {
     Node<double>* newNode = new Node<double>(data, _top);
     _top = newNode;
     stackSize++;
 }
 
-// Get the top element without removing it
+// Get the top number without removing it
 double Stack::top() {
     if (empty()) {
         cerr << "Error: Stack is empty.\n";
-        return 0;  // Return 0 for simplicity
+        return 0;  // Return 0 if stack is empty
     }
     return _top->getData();
 }
 
-// Remove and return the top element
+// Remove and get the top number
 double Stack::pop() {
     if (empty()) {
         cerr << "Error: Stack is empty.\n";
-        return 0;  // Return 0 for simplicity
+        return 0;  // Return 0 if stack is empty
     }
     double data = _top->getData();
     Node<double>* temp = _top;
