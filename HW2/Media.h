@@ -4,8 +4,10 @@
 #include <string>
 #include <iostream>
 
-namespace media {
-    class Media {
+namespace media 
+{
+    class Media 
+    {
     protected:
         int id;
         std::string title;
@@ -25,3 +27,5 @@ namespace media {
 
         void setId(int id);
         void setTitle(const std::string& title);
+    }
+}

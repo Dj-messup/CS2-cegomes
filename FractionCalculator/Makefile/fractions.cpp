@@ -1,49 +1,78 @@
 #include "fractions.h"
 
-fractions::Fraction::Fraction(int numerator, int denominator)
-{
+// Constructor: initializes the fraction
+Fraction::Fraction(int numerator, int denominator) {
+    if (denominator == 0) { // Handle division by zero
+        _numerator = 0;
+        _denominator = 1;
+        return;
+    }
+    _numerator = numerator;
+    _denominator = denominator;
+    simplify();
 }
 
-fractions::Fraction fractions::Fraction::operator+(fractions::Fraction const &frac)
-{
-    return Fraction(0, 1);
+// Finds the greatest common divisor (GCD) for simplification
+int Fraction::gcd(int a, int b) {
+    while (b != 0) {
+        int temp = b;
+        b = a % b;
+        a = temp;
+    }
+    return a;
 }
 
-fractions::Fraction fractions::Fraction::operator-(fractions::Fraction const &frac)
-{
-    return Fraction(0, 1);
+// Simplifies the fraction (e.g., 4/6 becomes 2/3)
+void Fraction::simplify() {
+    int divisor = gcd(abs(_numerator), abs(_denominator));
+    _numerator /= divisor;
+    _denominator /= divisor;
+
+    // Ensure the denominator is always positive
+    if (_denominator < 0) {
+        _numerator = -_numerator;
+        _denominator = -_denominator;
+    }
 }
 
-fractions::Fraction fractions::Fraction::operator*(Fraction const &frac)
-{
-    return Fraction(0, 1);
+// Adds two fractions
+Fraction Fraction::operator+(Fraction const &frac) {
+    int newNumerator = (_numerator * frac._denominator) + (frac._numerator * _denominator);
+    int newDenominator = _denominator * frac._denominator;
+    return Fraction(newNumerator, newDenominator);
 }
 
-fractions::Fraction fractions::Fraction::operator/(Fraction const &frac)
-{
-    return Fraction(0, 1);
+// Subtracts one fraction from another
+Fraction Fraction::operator-(Fraction const &frac) {
+    int newNumerator = (_numerator * frac._denominator) - (frac._numerator * _denominator);
+    int newDenominator = _denominator * frac._denominator;
+    return Fraction(newNumerator, newDenominator);
 }
 
-fractions::Fraction fractions::Fraction::simplify(Fraction frac)
-{
-    return Fraction(0, 1);
+// Multiplies two fractions
+Fraction Fraction::operator*(Fraction const &frac) {
+    int newNumerator = _numerator * frac._numerator;
+    int newDenominator = _denominator * frac._denominator;
+    return Fraction(newNumerator, newDenominator);
 }
 
-void fractions::Fraction::simplify()
-{
+// Divides one fraction by another
+Fraction Fraction::operator/(Fraction const &frac) {
+    if (frac._numerator == 0) { // Avoid division by zero
+        return Fraction(0, 1);
+    }
+    int newNumerator = _numerator * frac._denominator;
+    int newDenominator = _denominator * frac._numerator;
+    return Fraction(newNumerator, newDenominator);
 }
 
-int fractions::Fraction::gcd(int a, int b)
-{
-    return 0;
+// Checks if two fractions are equal
+bool Fraction::operator==(Fraction const &frac) {
+    return (_numerator == frac._numerator && _denominator == frac._denominator);
 }
 
-bool fractions::Fraction::operator==(Fraction const &frac)
-{
-    return false;
-}
-
-ostream &fractions::operator<<(ostream &os, const Fraction &frac)
-{
+// Outputs the fraction in "numerator/denominator" format
+ostream &operator<<(ostream &os, const Fraction &frac) {
+    os << frac._numerator << "/" << frac._denominator;
     return os;
 }
