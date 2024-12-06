@@ -1,28 +1,80 @@
 #include "Movie.h"
+#include <iostream>
+
+using namespace std; // Use this to avoid writing std:: all the time.
 
 namespace movies {
 
-    //Movie with no params
-    Movie::Movie() : year(0), rating(0.0) {}
+    // Constructor with no params, in case we need a blank movie (useful for placeholders)
+    Movie::Movie() {
+        imdb_title_id = "";
+        title = "";
+        year = 0;
+        genre = "";
+        rating = 0.0;
+        director = "";
+    }
 
-    // Param constructor, Movie vars - id, title, year, genre, rating, director
-    Movie::Movie(const std::string& id, const std::string& title, int year, const std::string& genre, double rating, const std::string& director)
-        : imdb_title_id(id), title(title), year(year), genre(genre), rating(rating), director(director) {}
+    // Constructor with params - sets up the movie when we know its info
+    Movie::Movie(const string& id, const string& title, int yr, const string& gen, double rat, const string& dir) {
+        imdb_title_id = id;
+        this->title = title; // "this->" makes it clear we're setting the class member
+        year = yr;
+        genre = gen;
+        rating = rat;
+        director = dir;
+    }
 
-    // Getters
-    std::string Movie::getImdbTitleId() const { return imdb_title_id; }
-    std::string Movie::getTitle() const { return title; }
-    int Movie::getYear() const { return year; }
-    std::string Movie::getGenre() const { return genre; }
-    double Movie::getRating() const { return rating; }
-    std::string Movie::getDirector() const { return director; }
+    // Getters - Fetch movie details
+    string Movie::getImdbTitleId() const { 
+        return imdb_title_id; 
+    }
+    
+    string Movie::getTitle() const { 
+        return title; 
+    }
+    
+    int Movie::getYear() const { 
+        return year; 
+    }
+    
+    string Movie::getGenre() const { 
+        return genre; 
+    }
+    
+    double Movie::getRating() const { 
+        return rating; 
+    }
+    
+    string Movie::getDirector() const { 
+        return director; 
+    }
 
-    // Setters
-    void Movie::setImdbTitleId(const std::string& id) { imdb_title_id = id; }
-    void Movie::setTitle(const std::string& title) { this->title = title; }
-    void Movie::setYear(int year) { this->year = year; }
-    void Movie::setGenre(const std::string& genre) { this->genre = genre; }
-    void Movie::setRating(double rating) { this->rating = rating; }
-    void Movie::setDirector(const std::string& director) { this->director = director; }
+    // Setters - Update movie details
+    void Movie::setImdbTitleId(const string& id) { 
+        imdb_title_id = id; 
+    }
+    
+    void Movie::setTitle(const string& title) { 
+        this->title = title; 
+    }
+    
+    void Movie::setYear(int yr) { 
+        year = yr; 
+    }
+    
+    void Movie::setGenre(const string& gen) { 
+        genre = gen; 
+    }
+    
+    void Movie::setRating(double rat) { 
+        rating = rat; 
+    }
+    
+    void Movie::setDirector(const string& dir) { 
+        director = dir; 
+    }
+
+    // (No destructor here since there's no dynamically allocated memory.)
 }
 

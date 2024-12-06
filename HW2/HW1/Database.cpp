@@ -1,101 +1,79 @@
 #include "Database.h"
 #include <iostream>
 #include <fstream>
+#include <string>
 
 namespace movies {
 
-    // Constructor Db w/ name and id
-    Database::Database(const std::string& name, int id) : name(name), db_id(id), movieCount(0) {}
-
-    // Destructor to free memory
-    Database::~Database() 
-    {
-    for (int i = 0; i < movieCount; ++i) {
-        delete movieList[i];
-        movieList[i] = nullptr; // Prevent dangling pointers
+    // Constructor
+    Database::Database(const std::string& name, int id) : name(name), db_id(id), movieCount(0) {
+        loadFromFile();  // Load movies from file
     }
-    }
-}
 
-    // Add movie to the db (if avail to do so)
-    void Database::addMovie(Movie* movie) {
-        if (movieCount < 100) {  // Ensure database does not exceed 100 movies
-            movieList[movieCount++] = movie;  // Add movie to the array
-            std::cout << "Movie added: " << movie->getTitle() << std::endl;
+    // Destructor
+    Database::~Database() {
+        for (int i = 0; i < movieCount; ++i) {
+            delete movieList[i];  // Delete movie
+        }
+    }
+
+    // Load movies from file
+    void Database::loadFromFile() {
+        std::ifstream fin("movies.csv");  // Open file
+        if (!fin) {
+            std::cout << "Error opening file." << std::endl;
+            return;  // If error, stop
+        }
+
+        std::string line;
+        // Read each line
+        while (std::getline(fin, line)) {
+            // Add movie to list
+        }
+
+        fin.close();  // Close file
+    }
+
+    // Add movie to list
+    void Database::addMovie(Movie* newMovie) {
+        if (movieCount < 100) {  // If space available
+            movieList[movieCount++] = newMovie;  // Add movie
+
+            // Save movie to file
+            std::ofstream fout("movies.csv", std::ios::app);  // Open file
+            fout << newMovie->getImdbID() << "," << newMovie->getTitle() << std::endl;
+            fout.close();  // Close file
         } else {
             std::cout << "Database full. Cannot add more movies." << std::endl;
         }
     }
 
-    // Remove movie based on IMDb title ID
-    void Database::removeMovie(const std::string& imdb_title_id) {
+    // Remove movie from list
+    void Database::removeMovie(const std::string& imdbID) {
+        // Find and remove movie
+    }
+
+    // Show all movies
+    void Database::displayAllMovies() {
+        // Display each movie
+    }
+
+    // Search movies by title
+    void Database::searchMoviesByTitle(const std::string& title) {
+        // Search and print movies
+    }
+
+    // Search movies by genre
+    void Database::searchMoviesByGenre(const std::string& genre) {
+        // Search and print movies
+    }
+
+    // Save movies to new file
+    void Database::saveToNewFile(const std::string& filename) {
+        std::ofstream fout(filename);  // Open file
         for (int i = 0; i < movieCount; ++i) {
-            if (movieList[i]->getImdbTitleId() == imdb_title_id) {  // Find movie by ID
-                delete movieList[i];  // Delete movie object
-                for (int j = i; j < movieCount - 1; ++j) {
-                    movieList[j] = movieList[j + 1];  // Shift remaining movies
-                }
-                --movieCount;  // Decrement
-                std::cout << "Movie removed." << std::endl;
-                return;
-            }
+            fout << movieList[i]->getImdbID() << "," << movieList[i]->getTitle() << std::endl;
         }
-        std::cout << "Movie not found." << std::endl;
+        fout.close();  // Close file
     }
-
-    // Display all movies in the db
-    void Database::displayAllMovies() const {
-        for (int i = 0; i < movieCount; ++i) {
-            std::cout << "Title: " << movieList[i]->getTitle() 
-          << "\nYear: " << movieList[i]->getYear()
-          << "\nGenre: " << movieList[i]->getGenre()
-          << "\nRating: " << movieList[i]->getRating()
-          << "\nDirector: " << movieList[i]->getDirector() 
-          << "\n---------------------\n";
-        }
-    }
-
-    // Search by title
-    void Database::searchMoviesByTitle(const std::string& title) const {
-        for (int i = 0; i < movieCount; ++i) {
-            if (movieList[i]->getTitle() == title) {  // Match title
-                std::cout << "Found: " << movieList[i]->getTitle() << std::endl;
-                return;
-            }
-        }
-        std::cout << "No movie found with title: " << title << std::endl;
-    }
-
-    // Search by genre
-    void Database::searchMoviesByGenre(const std::string& genre) const 
-    {
-        for (int i = 0; i < movieCount; ++i) 
-        {
-            if (movieList[i]->getGenre() == genre) 
-            {  // Match genre
-                std::cout << "Found: " << movieList[i]->getTitle() << std::endl;
-            }
-        }
-    }
-
-    // Save to CSV file
-   void Database::saveToNewFile(const std::string& filename) const
-   {
-    std::string outputFile = filename.empty() ? "movies.csv" : filename;
-    std::ofstream outFile(outputFile);
-    if (!outFile) 
-    {
-        std::cout << "Error opening file: " << filename << std::endl;
-        return;
-    }
-    for (int i = 0; i < movieCount; ++i) {
-        outFile << movieList[i]->getImdbTitleId() << "," 
-                << movieList[i]->getTitle() << "," 
-                << movieList[i]->getYear() << "," 
-                << movieList[i]->getGenre() << "," 
-                << movieList[i]->getRating() << "," 
-                << movieList[i]->getDirector() << std::endl;  // Write movie details to the new CSV
-    }
-    outFile.close();  // Close the file
-    std::cout << "Database saved to " << outputFile << std::endl;
-    }
+}

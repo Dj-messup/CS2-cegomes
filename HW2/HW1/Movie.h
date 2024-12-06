@@ -1,40 +1,34 @@
-#ifndef MOVIE_H
-#define MOVIE_H
-
+#pragma once
 #include <string>
+#include <iostream>
 
 namespace movies {
-    //Movie class with private vars
+
+    // Movie class with attributes and methods
     class Movie {
     private:
-        std::string imdb_title_id; // IMDB ID (private vars..)
-        std::string title;         
-        int year;                  
-        std::string genre;         
-        double rating;
-        std::string director;
+        std::string imdbID;  // IMDB ID
+        std::string title;   // Title of the movie
+        int year;            // Year of release
+        std::string genre;   // Genre of the movie
+        double rating;       // Rating of the movie
 
     public:
-        // Constructors
-        Movie();
-        Movie(const std::string& id, const std::string& title, int year, const std::string& genre, double rating, const std::string& director);
+        // Constructor
+        Movie(const std::string& id, const std::string& t, int y, const std::string& g, double r)
+            : imdbID(id), title(t), year(y), genre(g), rating(r) {}
 
-        // Getters (methods to get private vars)
-        std::string getImdbTitleId() const;
-        std::string getTitle() const;
-        int getYear() const;
-        std::string getGenre() const;
-        double getRating() const;
-        std::string getDirector() const;
+        // Display movie info
+        void displayInfo() const {
+            std::cout << title << " (" << year << ")\n";
+            std::cout << "Genre: " << genre << ", Rating: " << rating << std::endl;
+        }
 
-        // Setters (methods to set private vars)
-        void setImdbTitleId(const std::string& id);
-        void setTitle(const std::string& title);
-        void setYear(int year);
-        void setGenre(const std::string& genre);
-        void setRating(double rating);
-        void setDirector(const std::string& director);
+        // Getter functions
+        std::string getImdbID() const { return imdbID; }
+        std::string getTitle() const { return title; }
+        int getYear() const { return year; }
+        std::string getGenre() const { return genre; }
+        double getRating() const { return rating; }
     };
 }
-
-#endif
