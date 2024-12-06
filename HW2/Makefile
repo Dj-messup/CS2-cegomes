@@ -1,40 +1,34 @@
-# Compiler
+# Compiler name
 CXX = g++
 
-# Compiler flags
-CXXFLAGS = -Wall -std=c++11
+# C++ compiler flags
+# -c : compile and assemble into object files
+# -g : adds debugging information
+# -Wall : turns on most compiler warnings
+# -std=c++17 : uses the C++17 standard
+CXXFLAGS = -c -g -Wall -std=c++17
 
-# Target executable
-TARGET = movie_database
+# The build target executable file; .exe is not required
+PROGRAM = movie_database.out
 
-# Source files
-SRCS = main.cpp Movie.cpp Movie.h MovieDat.cpp Database.h
+# List all .cpp files separated by space
+CPPFILES = main.cpp Movie.cpp Database.cpp
 
-# Object files (generated from .cpp files)
-OBJS = main.o Movie.o Database.o
+# Default rule to build the executable
+all:
+	# Compile all the .cpp files into .o object files
+	$(CXX) $(CXXFLAGS) $(CPPFILES)
+	# Link all object files into the final executable
+	$(CXX) -o $(PROGRAM) *.o
 
-# Default rule to compile the executable
-all: $(TARGET)
-
-# Rule to build the target executable
-$(TARGET): $(OBJS)
-	$(CXX) $(CXXFLAGS) -o $(TARGET) $(OBJS)
-
-# Rule to compile main.cpp into main.o
-main.o: main.cpp Movie.h Database.h
-	$(CXX) $(CXXFLAGS) -c main.cpp
-
-# Rule to compile Movie.cpp into Movie.o
-Movie.o: Movie.cpp Movie.h
-	$(CXX) $(CXXFLAGS) -c Movie.cpp
-
-# Rule to compile Database.cpp into Database.o
-Database.o: Database.cpp Database.h Movie.h
-	$(CXX) $(CXXFLAGS) -c Database.cpp
-
-# Clean rule to remove compiled files
+# Clean rule to delete object and binary files
 clean:
-	rm -f $(OBJS) $(TARGET)
+	rm -f $(PROGRAM) *.o
 
-# Phony targets (non-file targets)
-.PHONY: all clean
+# Run rule to execute the program
+run:
+	./$(PROGRAM)
+
+# Test rule to run tests (if applicable)
+test:
+	./$(PROGRAM) test

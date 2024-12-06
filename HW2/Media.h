@@ -2,30 +2,26 @@
 #define MEDIA_H
 
 #include <string>
-#include <iostream>
 
-namespace media 
-{
-    class Media 
-    {
+namespace media {
+    class Media {
     protected:
         int id;
         std::string title;
         int year;
 
     public:
-        // Constructor
-        Media(int id, const std::string& title, int year);
+        Media(int id, std::string title, int year)
+            : id(id), title(title), year(year) {}
 
-        // Virtual destructor to allow proper cleanup
         virtual ~Media() {}
 
-        // Getters and Setters
-        int getId() const;
-        std::string getTitle() const;
-        int getYear() const;
-
-        void setId(int id);
-        void setTitle(const std::string& title);
-    }
+        virtual std::string displayInfo() const = 0; // Pure virtual function
+        // Getters and setters for the attributes
+        int getId() const { return id; }
+        std::string getTitle() const { return title; }
+        int getYear() const { return year; }
+    };
 }
+
+#endif // MEDIA_H
