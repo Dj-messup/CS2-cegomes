@@ -1,26 +1,29 @@
 #pragma once
 
 #include "Media.h"
+#include <string>
+
+using namespace std;
 
 namespace music {
 
     class Music : public media::Media {
     private:
-        std::string composer;
-        std::string genre;
-        int numTracks;
-        double totalPlaytime;
+        string composer;      // Composer of the music
+        string genre;         // Genre of the music
+        int numTracks;        // Number of tracks in the album
+        double totalPlaytime; // Total playtime of the album in minutes
 
     public:
         // Constructor
-        Music(int id, std::string title, int year, std::string composer, std::string genre, int numTracks, double totalPlaytime);
+        Music(int id, string title, int year, string composer, string genre, int numTracks, double totalPlaytime);
 
         // Getters and Setters
-        std::string getComposer() const;
-        void setComposer(const std::string& composer);
+        string getComposer() const;
+        void setComposer(const string& composer);
 
-        std::string getGenre() const;
-        void setGenre(const std::string& genre);
+        string getGenre() const;
+        void setGenre(const string& genre);
 
         int getNumTracks() const;
         void setNumTracks(int numTracks);
@@ -29,7 +32,8 @@ namespace music {
         void setTotalPlaytime(double totalPlaytime);
 
         // displayInfo (overridden from Media class)
-        std::string displayInfo() const;
+        string displayInfo() const;
     };
 
 }
+
