@@ -1,31 +1,94 @@
 #include <iostream>
-#include <string>
 #include "Database.h"
 #include "Movie.h"
+#include "Music.h"
+#include "TVShow.h"
 
 using namespace std;
 using namespace movies;
 
+void showMenu() {
+    cout << "\n=== Movie Database Menu ===" << endl;
+    cout << "1. Add a Movie" << endl;
+    cout << "2. Remove a Movie" << endl;
+    cout << "3. View All Movies" << endl;
+    cout << "4. Save Movies to File" << endl;
+    cout << "5. Exit" << endl;
+    cout << "Please choose an option (1-5): ";
+}
+
 int main() {
-    // Create a database for movies
+    // Initialize database
     Database db("Movie Database", 1);
 
-    // Add some movies
-    Movie* movie1 = new Movie("tt0111161", "The Shawshank Redemption", 1994, "Drama", 9.3);
-    Movie* movie2 = new Movie("tt0068646", "The Godfather", 1972, "Crime", 9.2);
+    // Load existing data from CSV files
+    db.loadMoviesFromFile("movies.csv");
+    db.loadMusicFromFile("music.csv");
+    db.loadTVShowsFromFile("tvshows.csv");
 
-    db.addMovie(movie1);  // Add first movie
-    db.addMovie(movie2);  // Add second movie
+    int choice;
+    bool running = true;
 
-    // Show all movies
-    db.displayAllMovies();
+    while (running) {
+        // Show menu
+        showMenu();
+        cin >> choice;
+        cin.ignore();  // Ignore leftover newline character
 
-    // Save movies to a new file
-    db.saveToNewFile("new_movies.csv");
+        switch (choice) {
+            case 1: {
+                // Add movie logic
+                string imdbId, title, genre;
+                int year;
+                float rating;
 
-    // Clean up memory
-    delete movie1;
-    delete movie2;
+                cout << "Enter IMDB ID: ";
+                getline(cin, imdbId);
+                cout << "Enter Title: ";
+                getline(cin, title);
+                cout << "Enter Year: ";
+                cin >> year;
+                cin.ignore();  // Ignore newline
+                cout << "Enter Genre: ";
+                getline(cin, genre);
+                cout << "Enter Rating (0.0 - 10.0): ";
+                cin >> rating;
+                cin.ignore();  // Ignore newline
+
+                Movie* newMovie = new Movie(imdbId, title, year, genre, rating);
+                db.addMovie(newMovie);
+                cout << "Movie added successfully!" << endl;
+                break;
+            }
+            case 2: {
+                // Remove movie logic
+                string imdbId;
+                cout << "Enter IMDB ID of the movie to remove: ";
+                getline(cin, imdbId);
+                db.removeMovie(imdbId);
+                cout << "Movie removed successfully!" << endl;
+                break;
+            }
+            case 3: {
+                // View all movies
+                db.displayAllMovies();
+                break;
+            }
+            case 4: {
+                // Save logic (this happens automatically after adding/removing)
+                cout << "Data saved automatically after changes." << endl;
+                break;
+            }
+            case 5: {
+                // Exit
+                running = false;
+                break;
+            }
+            default:
+                cout << "Invalid choice, try again." << endl;
+                break;
+        }
+    }
 
     return 0;
 }

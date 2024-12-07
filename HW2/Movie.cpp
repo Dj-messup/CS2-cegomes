@@ -1,78 +1,39 @@
-#include "Movie.h"
-#include <iostream>
+:#include "Movie.h"
 
-using namespace std; 
+using namespace std;
 
-namespace movies {
+// Constructor to initialize movie details
+Movie::Movie(const string& imdbId, const string& title, int year, const string& genre, float rating)
+    : imdbId(imdbId), title(title), year(year), genre(genre), rating(rating) {}
 
-    // Constructor with no params, in case we need a blank movie (useful for placeholders)
-    Movie::Movie() {
-        imdb_title_id = "";
-        title = "";
-        year = 0;
-        genre = "";
-        rating = 0.0;
-        director = "";
-    }
-
-    // Constructor with params - sets up the movie when we know its info
-    Movie::Movie(const string& id, const string& title, int yr, const string& gen, double rat, const string& dir) {
-        imdb_title_id = id;
-        this->title = title; // "this->" makes it clear we're setting the class member
-        year = yr;
-        genre = gen;
-        rating = rat;
-        director = dir;
-    }
-
-    // Getters - Fetch movie details
-    string Movie::getImdbTitleId() const { 
-        return imdb_title_id; 
-    }
-    
-    string Movie::getTitle() const { 
-        return title; 
-    }
-    
-    int Movie::getYear() const { 
-        return year; 
-    }
-    
-    string Movie::getGenre() const { 
-        return genre; 
-    }
-    
-    double Movie::getRating() const { 
-        return rating; 
-    }
-    
-    string Movie::getDirector() const { 
-        return director; 
-    }
-
-    // Setters - Update movie details
-    void Movie::setImdbTitleId(const string& id) { 
-        imdb_title_id = id; 
-    }
-    
-    void Movie::setTitle(const string& title) { 
-        this->title = title; 
-    }
-    
-    void Movie::setYear(int yr) { 
-        year = yr; 
-    }
-    
-    void Movie::setGenre(const string& gen) { 
-        genre = gen; 
-    }
-    
-    void Movie::setRating(double rat) { 
-        rating = rat; 
-    }
-    
-    void Movie::setDirector(const string& dir) { 
-        director = dir; 
-    }
+// Getter for IMDB ID
+string Movie::getImdbId() const {
+    return imdbId;
 }
 
+// Getter for movie title
+string Movie::getTitle() const {
+    return title;
+}
+
+// Getter for movie release year
+int Movie::getYear() const {
+    return year;
+}
+
+// Getter for movie genre
+string Movie::getGenre() const {
+    return genre;
+}
+
+// Getter for movie rating
+float Movie::getRating() const {
+    return rating;
+}
+
+// Function to display the movie's information
+void Movie::displayInfo() const {
+    cout << "IMDB ID: " << imdbId << ", Title: " << title
+         << ", Year: " << year << ", Genre: " << genre
+         << ", Rating: " << rating << endl;
+}

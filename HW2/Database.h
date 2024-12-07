@@ -1,86 +1,150 @@
 #pragma once
-#include "Movie.h"
-#include <string>
 #include <iostream>
+#include <string>
+#include <vector>
 #include <fstream>
+#include <sstream>
+#include "Movie.h"
+#include "Music.h"
+#include "TVShow.h"
 
 namespace movies {
 
-    // Database class to manage movies
     class Database {
     private:
-        std::string name;         // Name of the database
-        int db_id;                // Database ID
-        Movie* movieList[100];    // Array to store movies
-        int movieCount;           // Number of movies in the database
+        std::vector<Movie*> movies;
+        std::vector<Music*> music;
+        std::vector<TVShow*> tvShows;
+        std::string name;
+        int id;
 
     public:
-        // Constructor
-        Database(const std::string& db_name, int id)
-            : name(db_name), db_id(id), movieCount(0) {}
+        Database(std::string dbName, int dbId) : name(dbName), id(dbId) {}
 
-        // Destructor
         ~Database() {
-            for (int i = 0; i < movieCount; ++i) {
-                delete movieList[i];  // Free allocated memory for movies
-            }
+            for (auto movie : movies) delete movie;
+            for (auto musicItem : music) delete musicItem;
+            for (auto tvShow : tvShows) delete tvShow;
         }
 
-        // Add a movie to the database
-        void addMovie(Movie* newMovie) {
-            if (movieCount < 100) {  // Check if there is space
-                movieList[movieCount++] = newMovie;
-            }
+        void addMovie(Movie* movie) {
+            movies.push_back(movie);
+            saveMoviesToFile("movies.csv");
         }
 
-        // Remove a movie by IMDB ID
-        void removeMovie(const std::string& imdbID) {
-            for (int i = 0; i < movieCount; ++i) {
-                if (movieList[i]->getImdbID() == imdbID) {
-                    delete movieList[i];  // Delete the movie
-                    for (int j = i; j < movieCount - 1; ++j) {
-                        movieList[j] = movieList[j + 1];  // Shift movies
-                    }
-                    --movieCount;  // Decrease the movie count
-                    break;
-                }
-            }
+        void addMusic(Music* musicItem) {
+            music.push_back(musicItem);
+            saveMusicToFile("music.csv");
         }
 
-        // Display all movies in the database
+        void addTVShow(TVShow* tvShow) {
+            tvShows.push_back(tvShow);
+            saveTVShowsToFile("tvshows.csv");
+        }
+
+        void removeMovie(const std::string& imdbId) {
+            auto it = std::remove_if(movies.begin(), movies.end(), [&imdbId](Movie* movie) {
+                return movie->getImdbId() == imdbId;
+            });
+            movies.erase(it, movies.end());
+            saveMoviesToFile("movies.csv");
+        }
+
+        void removeMusic(const std::string& trackId) {
+            auto it = std::remove_if(music.begin(), music.end(), [&trackId](Music* musicItem) {
+                return musicItem->getTrackId() == trackId;
+            });
+            music.erase(it, music.end());
+            saveMusicToFile("music.csv");
+        }
+
+        void removeTVShow(const std::string& imdbId) {
+            auto it = std::remove_if(tvShows.begin(), tvShows.end(), [&imdbId](TVShow* tvShow) {
+                return tvShow->getImdbId() == imdbId;
+            });
+            tvShows.erase(it, tvShows.end());
+            saveTVShowsToFile("tvshows.csv");
+        }
+
         void displayAllMovies() const {
-            for (int i = 0; i < movieCount; ++i) {
-                movieList[i]->displayInfo();  // Display each movie's info
+            for (auto movie : movies) {
+                movie->display();
             }
         }
 
-        // Save the movies to a new file
-        void saveToNewFile(const std::string& filename) const {
-            std::ofstream fout(filename);  // Open file for writing
-            for (int i = 0; i < movieCount; ++i) {
-                fout << movieList[i]->getImdbID() << ","
-                     << movieList[i]->getTitle() << ","
-                     << movieList[i]->getYear() << ","
-                     << movieList[i]->getGenre() << ","
-                     << movieList[i]->getRating() << std::endl;
+        void displayAllMusic() const {
+            for (auto musicItem : music) {
+                musicItem->display();
             }
-            fout.close();  // Close the file
         }
 
-        // Load movies from a file
-        void loadFromFile() {
-            std::ifstream fin("movies.csv");  // Open file to read movies
-            if (!fin) {
-                std::cout << "Error opening file." << std::endl;
-                return;  // If error, stop
+        void displayAllTVShows() const {
+            for (auto tvShow : tvShows) {
+                tvShow->display();
             }
+        }
 
+        // Saving to CSV files
+        void saveMoviesToFile(const std::string& filename) {
+            std::ofstream outFile(filename);
+            if (outFile.is_open()) {
+                for (auto movie : movies) {
+                    outFile << movie->getImdbId() << "," << movie->getTitle() << ","
+                            << movie->getYear() << "," << movie->getGenre() << ","
+                            << movie->getRating() << "\n";
+                }
+                outFile.close();
+            }
+        }
+
+        void saveMusicToFile(const std::string& filename) {
+            std::ofstream outFile(filename);
+            if (outFile.is_open()) {
+                for (auto musicItem : music) {
+                    outFile << musicItem->getTrackId() << "," << musicItem->getTitle() << ","
+                            << musicItem->getArtist() << "," << musicItem->getGenre() << ","
+                            << musicItem->getRating() << "\n";
+                }
+                outFile.close();
+            }
+        }
+
+        void saveTVShowsToFile(const std::string& filename) {
+            std::ofstream outFile(filename);
+            if (outFile.is_open()) {
+                for (auto tvShow : tvShows) {
+                    outFile << tvShow->getImdbId() << "," << tvShow->getTitle() << ","
+                            << tvShow->getYear() << "," << tvShow->getGenre() << ","
+                            << tvShow->getRating() << "\n";
+                }
+                outFile.close();
+            }
+        }
+
+        // Loading from CSV files
+        void loadMoviesFromFile(const std::string& filename) {
+            std::ifstream inFile(filename);
             std::string line;
-            while (std::getline(fin, line)) {
-                // Parse the line and add movies (implementation not shown here)
-            }
+            while (getline(inFile, line)) {
+                std::stringstream ss(line);
+                std::string imdbId, title, genre;
+                int year;
+                float rating;
+                getline(ss, imdbId, ',');
+                getline(ss, title, ',');
+                ss >> year;
+                ss.ignore();
+                getline(ss, genre, ',');
+                ss >> rating;
 
-            fin.close();  // Close file
+                Movie* newMovie = new Movie(imdbId, title, year, genre, rating);
+                movies.push_back(newMovie);
+            }
+            inFile.close();
         }
-    };
-}
+
+        void loadMusicFromFile(const std::string& filename) {
+            std::ifstream inFile(filename);
+            std::string line;
+            while (getline(inFile, line)) {
+                std::stringstream
