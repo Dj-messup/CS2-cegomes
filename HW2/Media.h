@@ -1,5 +1,4 @@
-#ifndef MEDIA_H
-#define MEDIA_H
+#pragma once
 
 #include <string>
 
@@ -17,11 +16,10 @@ namespace media {
         virtual ~Media() {}
 
         virtual std::string displayInfo() const = 0; // Pure virtual function
+       
         // Getters and setters for the attributes
         int getId() const { return id; }
         std::string getTitle() const { return title; }
         int getYear() const { return year; }
     };
 }
-
-#endif // MEDIA_H

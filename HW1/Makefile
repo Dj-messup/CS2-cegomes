@@ -28,7 +28,3 @@ clean:
 # Run rule to execute the program
 run:
 	./$(PROGRAM)
-
-# Test rule to run tests (if applicable)
-test:
-	./$(PROGRAM) test

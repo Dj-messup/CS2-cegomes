@@ -32,5 +32,3 @@ clean:
 run:
 	./$(PROGRAM)
 
-test:
-	./$(PROGRAM) test

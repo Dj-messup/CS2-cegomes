@@ -1,7 +1,7 @@
 #pragma once
 #include "Media.h"
-#include <string>  // To use std::string
-using namespace std;  // Now you don't need to prefix string with std::
+#include <string>  
+using namespace std;  
 
 namespace tvshows {
 

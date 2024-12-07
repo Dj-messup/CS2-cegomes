@@ -29,6 +29,3 @@ clean:
 run:
 	./$(PROGRAM)
 
-# Test rule to run tests (if applicable)
-test:
-	./$(PROGRAM) test

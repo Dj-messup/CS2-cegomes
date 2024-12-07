@@ -1,7 +1,7 @@
 #include "Movie.h"
 #include <iostream>
 
-using namespace std; // Use this to avoid writing std:: all the time.
+using namespace std; 
 
 namespace movies {
 
@@ -74,7 +74,5 @@ namespace movies {
     void Movie::setDirector(const string& dir) { 
         director = dir; 
     }
-
-    // (No destructor here since there's no dynamically allocated memory.)
 }
 
