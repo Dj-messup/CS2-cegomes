@@ -2,14 +2,18 @@
 #include "Media.h"
 using namespace std;
 
-namespace tvshows {
-    class TvShow : public media::Media {
-        int seasons;
+namespace tvshows 
+{
+    class TvShow : public media::Media 
+    {
+    private:
+        int numEpisodes;
 
     public:
-        TvShow(int id, const string& title, int year, int seasons);
-        int getSeasons() const;
-        void showInfo() const override;
+        TvShow(int id, string title, int year, string genre, 
+               float rating, int episodes);
+        
+        int getEpisodes() { return numEpisodes; }
+        string displayInfo();
     };
 }
-

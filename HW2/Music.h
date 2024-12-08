@@ -4,13 +4,19 @@ using namespace std;
 
 namespace music {
     class Music : public media::Media {
-        string artist;
+    private:
+        string composer;
+        int numTracks;
+        int totalPlaytime;
 
     public:
-        Music(int id, const string& title, int year, const string& artist);
-        string getArtist() const;
-        void showInfo() const override;
+        Music(int id, string title, int year, string genre, 
+              string composer, int tracks, int playtime);
+        
+        string getComposer() { return composer; }
+        int getTracks() { return numTracks; }
+        int getPlaytime() { return totalPlaytime; }
+        
+        string displayInfo();
     };
 }
-
-

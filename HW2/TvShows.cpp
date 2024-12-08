@@ -2,14 +2,23 @@
 #include <iostream>
 using namespace std;
 
-namespace tvshows {
-    TvShow::TvShow(int id, const string& title, int year, int seasons)
-        : Media(id, title, year), seasons(seasons) {}
+namespace tvshows 
+{
+    TvShow::TvShow(int id, string title, int year, string genre, 
+                   float rating, int episodes)
+        : Media(id, title, year, genre, rating) 
+        {
+        this->numEpisodes = episodes;
+        }
 
-    int TvShow::getSeasons() const { return seasons; }
-
-    void TvShow::showInfo() const {
-        cout << "TV Show: " << title << " (" << year << "), Seasons: " << seasons << endl;
+    string TvShow::displayInfo() 
+    {
+        string info = "TV Show: ";
+        info += title;
+        info += " (" + to_string(year) + ")";
+        info += "\n  Genre: " + genre;
+        info += "\n  Rating: " + to_string(rating);
+        info += "\n  Episodes: " + to_string(numEpisodes);
+        return info;
     }
 }
-
