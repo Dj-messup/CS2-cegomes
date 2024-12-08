@@ -13,6 +13,7 @@ namespace media {
 
     public:
         Media(int id, const string& title, int year, const string& genre, float rating);
+        virtual ~Media() { }
         
         int getId() { return id; }
         string getTitle() { return title; }
@@ -20,7 +21,7 @@ namespace media {
         string getGenre() { return genre; }
         float getRating() { return rating; }
         
-        virtual string displayInfo() = 0;  // Pure virtual function
+        virtual string displayInfo() = 0;
     };
 }
 
