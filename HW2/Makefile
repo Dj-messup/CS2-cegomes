@@ -12,7 +12,7 @@ CXXFLAGS = -c -g -Wall -std=c++17
 PROGRAM = movie_database.out
 
 # List all .cpp files separated by space
-CPPFILES = main.cpp Movie.cpp Database.cpp
+CPPFILES = main.cpp Movie.cpp Database.cpp Media.cpp Music.cpp TvShows.cpp
 
 # Default rule to build the executable
 all:
