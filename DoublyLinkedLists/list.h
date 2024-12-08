@@ -7,205 +7,238 @@ using namespace std;
 template <class T1>
 class List
 {
-private:
-    Node<T1>* _head;
-    Node<T1>* _tail;
-    size_t listSize;
+    private:
+        Node<T1> *_head;
+        Node<T1> *_tail;
+        size_t listSize;
 
-public:
-    List();
-    ~List();
+    public:
+        List();
+        ~List();
 
-    bool empty();
-    size_t size();
+        bool empty();
+        size_t size();
 
-    void push_front(T1);
-    T1 pop_front();
-    T1 front();
-    void push_back(T1);
-    T1 pop_back();
-    T1 back();
+        void push_front(T1);
+        T1 pop_front();
+        T1 front();
+        void push_back(T1);
+        T1 pop_back();
+        T1 back();
 
-    bool operator==(const List<T1>&);
-
-    template <class T2>
-    friend ostream& operator<<(ostream&, const List<T2>&);
+        bool operator==(const List<T1>&);
+        // Have to declare a template for friend functions using a different template variable
+        template <class T2>
+        friend ostream &operator<<(ostream &, const List<T2> &);
 };
 
-// Constructor: Initialize list with nullptr and set listSize to 0
+// set to nullptr and initialize listSize
 template <class T1>
-List<T1>::List() : _head(nullptr), _tail(nullptr), listSize(0) {}
+List<T1>::List()
+{
+    // Start with empty list
+    _head = nullptr;
+    _tail = nullptr;
+    listSize = 0;
+}
 
-// Destructor: Iteratively delete the list starting at _head
+// iteratively delete the list starting at _head
 template <class T1>
 List<T1>::~List()
 {
+    // Keep track of current node we're deleting
     Node<T1>* current = _head;
-    while (current)
-    {
-        Node<T1>* nextNode = current->getNext();
+    
+    // Delete nodes one by one
+    while (current != nullptr) {
+        Node<T1>* next = current->getNext();  // Save next before deleting
         delete current;
-        current = nextNode;
+        current = next;
     }
-    _head = _tail = nullptr;
+
+    // Clean up pointers just to be safe
+    _head = nullptr;
+    _tail = nullptr;
 }
 
-// Return true if the list is empty, false otherwise
+// return true if the list is empty, false otherwise.
+// Do not just check listSize, should actually check _head and _tail
 template <class T1>
 bool List<T1>::empty()
 {
-    return _head == nullptr && _tail == nullptr;
+    // Need to check both head and tail are nullptr
+    // A properly maintained list should have both null or both non-null
+    return (_head == nullptr && _tail == nullptr);
 }
 
-// Return the number of elements in the list
+// return number of elements in list
 template <class T1>
 size_t List<T1>::size()
 {
-    return listSize;
+    return listSize;  // Track size as we add/remove
 }
 
-// Add an element to the beginning of the list, updating _head
+// add an element to the beginning of the list, updating _head
 template <class T1>
 void List<T1>::push_front(T1 data)
 {
+    // Make new node to add
     Node<T1>* newNode = new Node<T1>();
     newNode->setData(data);
+    
+    // Connect it to the front
     newNode->setNext(_head);
-
-    if (_head)
+    
+    if (_head != nullptr) {
+        // List not empty, fix previous pointer
         _head->setPrev(newNode);
-    else
-        _tail = newNode;  // Update _tail if the list was empty
-
-    _head = newNode;
-    ++listSize;
+    } else {
+        // List was empty, new node is also tail
+        _tail = newNode;
+    }
+    
+    _head = newNode;  // New node is now front
+    listSize++;
 }
 
-// Return the first element in the list
-// If the list is empty, print a message and return 0
+// return the first element in the list.
+// if the list is empty, print that out and return 0
 template <class T1>
 T1 List<T1>::front()
 {
-    if (empty())
-    {
+    if (empty()) {
         cout << "List is empty!" << endl;
-        return T1();  // Return default value for type T1
+        return 0;  // Return 0 for empty list
     }
     return _head->getData();
 }
 
-// Remove the first element from the list and return its data
-// If the list is empty, print a message and return 0
+// remove the first element from the list and return its data
+// if the list is empty, print that out and return 0
 template <class T1>
 T1 List<T1>::pop_front()
 {
-    if (empty())
-    {
+    if (empty()) {
         cout << "List is empty!" << endl;
-        return T1();  // Return default value
+        return 0;  // Return 0 for empty list
     }
 
-    Node<T1>* temp = _head;
-    T1 data = temp->getData();
+    // Save the value to return
+    T1 value = _head->getData();
+    Node<T1>* oldHead = _head;
 
+    // Move head to next node
     _head = _head->getNext();
-    if (_head)
-        _head->setPrev(nullptr);
-    else
-        _tail = nullptr;  // Update _tail if the list becomes empty
+    
+    if (_head != nullptr) {
+        _head->setPrev(nullptr);  // New front has no previous
+    } else {
+        _tail = nullptr;  // List now empty
+    }
 
-    delete temp;
-    --listSize;
-    return data;
+    delete oldHead;
+    listSize--;
+    return value;
 }
 
-// Add an element to the end of the list, updating _tail
+// add an element to the end of the list, updating _tail
 template <class T1>
 void List<T1>::push_back(T1 data)
 {
+    // Make new node
     Node<T1>* newNode = new Node<T1>();
     newNode->setData(data);
-    newNode->setPrev(_tail);
-
-    if (_tail)
+    
+    // Handle empty list case
+    if (_tail == nullptr) {
+        _head = newNode;
+        _tail = newNode;
+    } else {
+        // Connect to current tail
+        newNode->setPrev(_tail);
         _tail->setNext(newNode);
-    else
-        _head = newNode;  // Update _head if the list was empty
-
-    _tail = newNode;
-    ++listSize;
+        _tail = newNode;
+    }
+    
+    listSize++;
 }
 
-// Return the last element in the list
-// If the list is empty, print a message and return 0
+// return the last element in the list.
+// if the list is empty, print that out and return 0
 template <class T1>
 T1 List<T1>::back()
 {
-    if (empty())
-    {
+    if (empty()) {
         cout << "List is empty!" << endl;
-        return T1();  // Return default value
+        return 0;  // Return 0 for empty list
     }
     return _tail->getData();
 }
 
-// Remove the last element from the list and return its data
-// If the list is empty, print a message and return 0
+// remove the last element from the list and return its data
+// if the list is empty, print that out and return 0
 template <class T1>
 T1 List<T1>::pop_back()
 {
-    if (empty())
-    {
+    if (empty()) {
         cout << "List is empty!" << endl;
-        return T1();  // Return default value
+        return 0;  // Return 0 for empty list
     }
 
-    Node<T1>* temp = _tail;
-    T1 data = temp->getData();
+    T1 value = _tail->getData();
+    Node<T1>* oldTail = _tail;
 
+    // Update tail
     _tail = _tail->getPrev();
-    if (_tail)
+    
+    if (_tail != nullptr) {
         _tail->setNext(nullptr);
-    else
-        _head = nullptr;  // Update _head if the list becomes empty
+    } else {
+        _head = nullptr;  // List now empty
+    }
 
-    delete temp;
-    --listSize;
-    return data;
+    delete oldTail;
+    listSize--;
+    return value;
 }
 
-// Overloading <<: Return a space-separated stream of all the elements
+// overloading <<, print space separated elements
 template <class T1>
 ostream& operator<<(ostream& os, const List<T1>& list)
 {
+    // Start at front and print each element
     Node<T1>* current = list._head;
-    while (current)
-    {
+    while (current != nullptr) {
         os << current->getData();
-        if (current->getNext())
-            os << " ";
+        if (current->getNext() != nullptr) {
+            os << " ";  // Space between elements
+        }
         current = current->getNext();
     }
     return os;
 }
 
-// Compare two lists: Should iterate through each list to check that they are the same
+// Check if two lists are exactly the same
 template <class T1>
 bool List<T1>::operator==(const List<T1>& rhs)
 {
-    if (listSize != rhs.listSize)
+    // Different sizes means not equal
+    if (listSize != rhs.listSize) {
         return false;
-
-    Node<T1>* left = _head;
-    Node<T1>* right = rhs._head;
-
-    while (left && right)
-    {
-        if (left->getData() != right->getData())
-            return false;
-
-        left = left->getNext();
-        right = right->getNext();
     }
-    return true;
+
+    // Check each node
+    Node<T1>* current = _head;
+    Node<T1>* otherCurrent = rhs._head;
+    
+    while (current != nullptr) {
+        // If any values different, lists not equal
+        if (current->getData() != otherCurrent->getData()) {
+            return false;
+        }
+        current = current->getNext();
+        otherCurrent = otherCurrent->getNext();
+    }
+    
+    return true;  // Made it through whole list, must be equal
 }

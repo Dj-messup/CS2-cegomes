@@ -4,8 +4,7 @@
 
 using namespace std;
 
-class Word
-{
+class Word {
 private:
     string _word;
     int _counter;
@@ -26,36 +25,35 @@ public:
 };
 
 // Default constructor, set word to "" and counter to 1
-Word::Word()
-{
+Word::Word() {
+    _word = "";
+    _counter = 1;
 }
 
 // Parameterized constructor
-Word::Word(string tmpWord, int tmpCounter)
-{
+Word::Word(string tmpWord, int tmpCounter) {
+    _word = tmpWord;
+    _counter = tmpCounter;
 }
 
 // return a constructed word with the counter incremented
-// You do not need to worry about the counter parameter since this will have its own _counter
-Word Word::operator++(int counter)
-{
-    return Word();
+Word Word::operator++(int counter) {
+    Word temp = *this;
+    _counter++;
+    return temp;
 }
 
 // Check if two Words are equal (compare _word)
-bool Word::operator==(const Word &otherWord)
-{
-    return false;
+bool Word::operator==(const Word &otherWord) {
+    return _word == otherWord._word;
 }
 
 // Check if this is less than otherWord
-bool Word::operator<(const Word &otherWord)
-{
-    return false;
+bool Word::operator<(const Word &otherWord) {
+    return _word < otherWord._word;
 }
 
 // Check if this is greater than otherWord
-bool Word::operator>(const Word &otherWord)
-{
-    return false;
+bool Word::operator>(const Word &otherWord) {
+    return _word > otherWord._word;
 }

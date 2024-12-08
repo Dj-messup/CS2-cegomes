@@ -31,3 +31,6 @@ clean:
 # Add a rule to run the program
 run:
 	./$(PROGRAM)
+
+test:
+	./$(PROGRAM) test
