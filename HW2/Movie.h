@@ -1,30 +1,14 @@
 #pragma once
-#include <iostream>
-#include <string>
+#include "Media.h"
+using namespace std;
 
 namespace movies {
-
-    class Movie {
-    private:
-        std::string imdbId;
-        std::string title;
-        int year;
-        std::string genre;
-        float rating;
+    class Movie : public media::Media {
+        string director;
 
     public:
-        Movie(std::string imdbId, std::string title, int year, std::string genre, float rating)
-            : imdbId(imdbId), title(title), year(year), genre(genre), rating(rating) {}
-
-        std::string getImdbId() const { return imdbId; }
-        std::string getTitle() const { return title; }
-        int getYear() const { return year; }
-        std::string getGenre() const { return genre; }
-        float getRating() const { return rating; }
-
-        void display() const {
-            std::cout << "IMDB ID: " << imdbId << ", Title: " << title << ", Year: " << year
-                << ", Genre: " << genre << ", Rating: " << rating << std::endl;
-        }
+        Movie(int id, const string& title, int year, const string& director);
+        string getDirector() const;
+        void showInfo() const override;
     };
 }

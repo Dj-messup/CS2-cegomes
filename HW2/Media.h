@@ -1,25 +1,22 @@
 #pragma once
-
 #include <string>
+using namespace std;
 
 namespace media {
     class Media {
     protected:
         int id;
-        std::string title;
+        string title;
         int year;
 
     public:
-        Media(int id, std::string title, int year)
-            : id(id), title(title), year(year) {}
+        Media(int id, const string& title, int year);
+        virtual ~Media() = default;
 
-        virtual ~Media() {}
-
-        virtual std::string displayInfo() const = 0; // Pure virtual function
-       
-        // Getters and setters for the attributes
-        int getId() const { return id; }
-        std::string getTitle() const { return title; }
-        int getYear() const { return year; }
+        int getId() const;
+        string getTitle() const;
+        int getYear() const;
+        virtual void showInfo() const = 0;
     };
 }
+
