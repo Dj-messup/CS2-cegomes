@@ -1,97 +1,170 @@
-#include "Database.h"
+database2:#include "Database.h"
 #include <iostream>
 #include <fstream>
+#include <vector>
+#include <sstream>
 
 using namespace std;
 
-namespace movies {
+namespace database 
+{
 
     // Constructor to initialize the database with a name and ID
     Database::Database(const string& dbName, int dbId)
-        : name(dbName), dbId(dbId), movieCount(0) {}
+        : name(dbName), dbId(dbId) {}
 
-    // Destructor to delete all movies and free memory
-    Database::~Database() {
-        for (int i = 0; i < movieCount; ++i) {
-            delete movieList[i];  // Delete each movie object
+    // Destructor to delete all media objects and free memory
+    Database::~Database() 
+    {
+        for (auto media : mediaList)
+        {
+            delete media;  // Delete each media object
         }
     }
 
-    // Load movies from a file (e.g., "movies.csv")
-    void Database::loadMoviesFromFile() {
-        ifstream fin("movies.csv");  // Open the file for reading
-        if (!fin) {
-            cout << "Error opening file." << endl;
+    // Load media items from a file
+    void Database::loadMediaFromFile(const string& filename) 
+    {
+        ifstream fin(filename);  // Open the file for reading
+        if (!fin) 
+        {
+            cout << "Error opening file: " << filename << endl;
             return;  // Stop if file can't be opened
         }
 
         string line;
-        while (getline(fin, line)) {
-            // Here, you would typically parse the line and create a new movie object
-            // This can be extended later if needed
-        }
-        fin.close();  // Close the file
-    }
+        while (getline(fin, line))
+        {
+            stringstream ss(line);
+            string type, id, title, year, genre, extra1, extra2;
+            getline(ss, type, ',');
+            getline(ss, id, ',');
+            getline(ss, title, ',');
+            getline(ss, year, ',');
+            getline(ss, genre, ',');
 
-    // Add a movie to the database
-    void Database::addMovie(Movie* newMovie) {
-        if (movieCount < 100) {  // Ensure there is space in the database
-            movieList[movieCount++] = newMovie;  // Add movie to list and increment count
-
-            // save the movie to a file
-            ofstream fout("movies.csv", ios::app);  // Open the file for appending
-            fout << newMovie->getImdbId() << ","
-                 << newMovie->getTitle() << ","
-                 << newMovie->getYear() << ","
-                 << newMovie->getGenre() << ","
-                 << newMovie->getRating() << endl;
-            fout.close();  // Close the file after writing
-        } else {
-            cout << "Database is full. Cannot add more movies." << endl;
-        }
-    }
-
-    // Remove a movie from the database by its IMDB ID
-    void Database::removeMovie(const string& imdbId) {
-        for (int i = 0; i < movieCount; ++i) {
-            if (movieList[i]->getImdbId() == imdbId) {
-                delete movieList[i];  // Delete the movie object
-                for (int j = i; j < movieCount - 1; ++j) {
-                    movieList[j] = movieList[j + 1];  // Shift the remaining movies
+                if (type == "Movie") 
+                {
+                    getline(ss, extra1, ','); // Rating
+                    getline(ss, extra2);     // Director
+                    addMedia(new Movie(id, title, year, genre, stod(extra1), extra2));
+                } else if (type == "TV") 
+                {
+                    getline(ss, extra1, ','); // Rating
+                    getline(ss, extra2);     // Episodes
+                    addMedia(new TvShow(id, title, year, genre, stod(extra1), stoi(extra2)));
+                } else if (type == "Music") 
+                {
+                    getline(ss, extra1, ','); // Composer
+                    getline(ss, extra2, ','); // Tracks
+                    string totalPlaytime;
+                    getline(ss, totalPlaytime);
+                    addMedia(new Music(id, title, year, genre, extra1, stoi(extra2), stod(totalPlaytime)));
                 }
-                --movieCount;  // Decrease the movie count
-                break;
+            }
+            fin.close();  // Close the file
+        }
+
+    // Add a media item to the database
+    void Database::addMedia(Media* newMedia) 
+    {
+        mediaList.push_back(newMedia);  // Add media to list
+
+        // Save the media to its specific file
+        ofstream fout;
+        if (dynamic_cast<Movie*>(newMedia)) 
+            {
+                fout.open("movies.csv", ios::app);
+            } else if (dynamic_cast<TvShow*>(newMedia)) 
+            {
+                fout.open("tvshows.csv", ios::app);
+            } else if (dynamic_cast<Music*>(newMedia)) 
+            {
+                fout.open("music.csv", ios::app);
+            }
+
+            if (fout) 
+            {
+                fout << newMedia->getType() << ","
+                     << newMedia->getId() << ","
+                    << newMedia->getTitle() << ","
+                    << newMedia->getYear() << ","
+                     << newMedia->getGenre() << ","
+                    << newMedia->getExtra1() << ","
+                    << newMedia->getExtra2() << endl;
+                fout.close();
+            }
+    }      
+
+    // Remove a media item from the database by its ID
+    void Database::removeMediaById(const string& id) 
+    {
+        for (auto it = mediaList.begin(); it != mediaList.end(); ++it) 
+            {
+            if ((*it)->getId() == id) 
+                {
+                    cout << "Removing: " << (*it)->getTitle() << endl;
+                    delete *it;
+                    mediaList.erase(it);
+                    break;
+                }
+            }
+
+        // Update all relevant files
+        updateFile("movies.csv", id);
+        updateFile("tvshows.csv", id);
+        updateFile("music.csv", id);
+    }
+
+    // Helper function to update files after deletion
+    void Database::updateFile(const string& filename, const string& id) 
+    {   
+        ifstream fin(filename);
+        ofstream fout("temp.csv");
+
+        string line;
+        while (getline(fin, line)) 
+        {
+            if (line.find(id) == string::npos) 
+            {
+                fout << line << endl;
             }
         }
+
+        fin.close();
+        fout.close();
+        remove(filename.c_str());
+        rename("temp.csv", filename.c_str());
     }
 
-    // Display all movies in the database
-    void Database::displayAllMovies() const {
-        if (movieCount == 0) {
-            cout << "No movies to display." << endl;
-            return;
-        }
-
-        for (int i = 0; i < movieCount; ++i) {
-            movieList[i]->displayInfo();  // Display each movie's details
+    // Display all media items of a specific type
+    void Database::displayMediaByType(const string& type)  
+    {
+        cout << "Displaying " << type << " list:\n";
+        for (auto media : mediaList) 
+        {
+            if (media->getType() == type) 
+                {
+                media->displayInfo();
+                }
         }
     }
 
-    // Save all movies in the database to a new file
-    void Database::saveMoviesToNewFile(const string& filename) const {
-        ofstream fout(filename);  // Open the file for writing
-        if (!fout) {
-            cout << "Error opening file for saving." << endl;
-            return;
-        }
-
-        for (int i = 0; i < movieCount; ++i) {
-            fout << movieList[i]->getImdbId() << ","
-                 << movieList[i]->getTitle() << ","
-                 << movieList[i]->getYear() << ","
-                 << movieList[i]->getGenre() << ","
-                 << movieList[i]->getRating() << endl;
-        }
-        fout.close();  // Close the file
+    // Write the entire database to a unified file
+    void Database::writeDatabaseToFile(const string& filename) 
+    {
+    ofstream fout(filename);
+    if (!fout) {
+        cout << "Error creating file: " << filename << endl;
+        return;
     }
-}
+
+    fout << "Media Database\n";
+    for (auto media : mediaList) {
+        fout << media->toString() << endl;
+    }
+    fout.close();
+    cout << "Database written to " << filename << endl;
+    }
+
+} // namespace database
