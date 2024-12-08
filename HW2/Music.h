@@ -5,18 +5,21 @@ using namespace std;
 namespace music {
     class Music : public media::Media {
     private:
-        string composer;
-        int numTracks;
-        int totalPlaytime;
+        string composer;     // who made the music
+        int numTracks;       // number of songs
+        int totalPlaytime;   // how long album is
 
     public:
-        Music(int id, string title, int year, string genre, 
-              string composer, int tracks, int playtime);
+        // constructor for music
+        Music(int id, string title, int year, string genre, string composer, 
+              int tracks, int playtime);
         
+        // get functions
         string getComposer() { return composer; }
         int getTracks() { return numTracks; }
         int getPlaytime() { return totalPlaytime; }
         
+        // display music info
         string displayInfo();
     };
 }

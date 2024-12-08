@@ -1,17 +1,20 @@
-#include "Movie.h"
+#pragma once
+#include "Media.h"
+using namespace std;
 
-namespace movies 
-{
-    Movie::Movie(int id, string title, int year, string genre, float rating, string director) 
-        : Media(id, title, year, genre, rating) 
-    {
-        this->director = director;
-    }
+namespace movies {
+    class Movie : public media::Media {
+    private:
+        string director;  // who directed the movie
 
-    string Movie::displayInfo() 
-    {
-        return "ID: " + to_string(id) + " - " + title + " (" + 
-               to_string(year) + ") - " + genre + " - Rating: " + 
-               to_string(rating) + " - Director: " + director;
-    }
+    public:
+        // constructor
+        Movie(int id, string title, int year, string genre, float rating, string director);
+        
+        // get the director
+        string getDirector() { return director; }
+        
+        // show movie info
+        string displayInfo();
+    };
 }
