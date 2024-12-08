@@ -9,7 +9,7 @@ CXX = g++
 CXXFLAGS = -c -g -Wall -std=c++17
 
 OBJS = main.o Media.o Movie.o TvShows.o Music.o Database.o
-
+#used help here 
 TARGET = mediadb
 
 $(TARGET): $(OBJS)
@@ -41,4 +41,3 @@ clean:
 # Run rule to execute the program
 run:
 	./$(PROGRAM)
-
