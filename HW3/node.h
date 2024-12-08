@@ -1,43 +1,61 @@
 #pragma once
 
-template <typename T>
-class Node {
-private:
-    T _data;                // The data in this node
-    Node<T>* _next;         // Pointer to the next node
+template <class T1>
+class Node 
+{
+    private:
+        T1 _data;
+        Node<T1>* _prev;  // Add this back
+        Node<T1>* _next;
 
-public:
-    Node(T data, Node<T>* next = nullptr); // Make a node
-    void setData(T data);                  // Change the data
-    void setNext(Node<T>* next);           // Change the next node
-    T getData();                           // Get the data
-    Node<T>* getNext();                    // Get the next node
+    public:
+        Node();  // Changed to match skeleton
+        void setData(T1);
+        void setPrev(Node<T1>*);  // Add this back
+        void setNext(Node<T1>*);
+        T1 getData();
+        Node<T1>* getPrev();  // Add this back
+        Node<T1>* getNext();
 };
 
-// Make a node with some data
-template <typename T>
-Node<T>::Node(T data, Node<T>* next) : _data(data), _next(next) {}
-
-// Change the data in the node
-template <typename T>
-void Node<T>::setData(T data) {
+template <class T1>
+Node<T1>::Node() 
+{
+    _prev = nullptr;
+    _next = nullptr;
+}
+template <class T1>
+void Node<T1>::setData(T1 data)
+{
     _data = data;
 }
 
-// Change the next pointer
-template <typename T>
-void Node<T>::setNext(Node<T>* next) {
+template <class T1>
+void Node<T1>::setPrev(Node<T1>* prev)
+{
+    _prev = prev;
+}
+
+template <class T1>
+void Node<T1>::setNext(Node<T1>* next)
+{
     _next = next;
 }
 
-// Get the data from the node
-template <typename T>
-T Node<T>::getData() {
+template <class T1>
+T1 Node<T1>::getData()
+{
     return _data;
 }
 
-// Get the next node
-template <typename T>
-Node<T>* Node<T>::getNext() {
+template <class T1>
+Node<T1>* Node<T1>::getPrev()
+{
+    return _prev;
+}
+
+template <class T1>
+Node<T1>* Node<T1>::getNext()
+{
     return _next;
 }

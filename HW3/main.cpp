@@ -5,74 +5,73 @@
 
 using namespace std;
 
-// Solves math written in Reverse Polish Notation (RPN)
-double evaluateRPN(string expression) {
+double evaluateRPN(string expression) 
+{
     Stack stack;
     stringstream ss(expression);
     string token;
 
     while (ss >> token) {
-        // If the token is a number, push it to the stack
         if (isdigit(token[0]) || (token.size() > 1 && token[0] == '-' && isdigit(token[1]))) {
             stack.push(stod(token));
         } 
-        // If the token is an operator, do the math
         else if (token == "+" || token == "-" || token == "*" || token == "/") {
             if (stack.size() < 2) {
-                cerr << "Error: Not enough numbers for \"" << token << "\".\n";
-                return 0;
+                cerr << "Error: Not enough operands.\n";
+                return nan("");  // Changed from 0 to NaN
             }
-
-            // Get two numbers from the stack
             double b = stack.pop();
             double a = stack.pop();
-
-            // Do the operation
+            
             if (token == "+") stack.push(a + b);
             else if (token == "-") stack.push(a - b);
             else if (token == "*") stack.push(a * b);
             else if (token == "/") {
                 if (b == 0) {
                     cerr << "Error: Division by zero.\n";
-                    return 0;
+                    return nan("");  // Changed from 0 to NaN
                 }
                 stack.push(a / b);
             }
         } 
-        // If the token is not valid, show an error
         else {
-            cerr << "Error: Invalid token \"" << token << "\".\n";
-            return 0;
+            cerr << "Error: Invalid token.\n";
+            return nan("");  // Changed from 0 to NaN
         }
     }
 
-    // If there’s not one number left, something went wrong
     if (stack.size() != 1) {
-        cerr << "Error: Invalid RPN expression.\n";
-        return 0;
+        cerr << "Error: Invalid expression.\n";
+        return nan("");  // Changed from 0 to NaN
     }
 
-    // Return the answer
     return stack.pop();
 }
 
-int main(int argc, char *argv[]) {
-    // Check if the program is run with the right arguments
-    if (argc == 3 && string(argv[1]) == "-p") {
-        string expression = argv[2];
-        double result = evaluateRPN(expression);
+void test() 
+{
+    cout << "\nRunning tests:" << endl;
+    cout << "3 4 + = " << evaluateRPN("3 4 +") << endl;
+    cout << "3 4 + 5 6 - * = " << evaluateRPN("3 4 + 5 6 - *") << endl;
+    cout << "7 5 + 1 42 / + = " << evaluateRPN("7 5 + 1 42 / +") << endl;
+}
 
-        // Show the result
-        if (result != 0) {
-            cout << expression << " = " << result << endl;
-        } else {
-            cout << "Failed to evaluate expression.\n";
+int main(int argc, char *argv[]) 
+{
+    if (argc == 3 && string(argv[1]) == "-p") {
+        double result = evaluateRPN(argv[2]);
+        if (!isnan(result)) {
+            cout << argv[2] << " = " << result << endl;
         }
     } 
-    // Tell the user how to run the program
     else {
-        cout << "Usage: ./main.out -p \"RPN_EXPRESSION\"\n";
+        string expression;
+        cout << "Enter an RPN expression: ";
+        getline(cin, expression);
+        double result = evaluateRPN(expression);
+        if (!isnan(result)) {
+            cout << expression << " = " << result << endl;
+        }
     }
-
     return 0;
 }
