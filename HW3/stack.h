@@ -21,14 +21,12 @@ class Stack
         double top();
 };
 
-//constructor
 Stack::Stack() 
 {
     _top = nullptr;
     stackSize = 0;
 }
 
-// Destructor - clean up nodes
 Stack::~Stack() 
 {
     while(!empty()) {
@@ -55,12 +53,11 @@ void Stack::push(double data)
     stackSize++;
 }
 
-// Return NaN for empty stack as specified
 double Stack::top() 
 {
     if (empty()) {
         cerr << "Error: Stack is empty.\n";
-        return nan("");  // Changed from 0 to NaN
+        return nan("");
     }
     return _top->getData();
 }
@@ -69,7 +66,7 @@ double Stack::pop()
 {
     if (empty()) {
         cerr << "Error: Stack is empty.\n";
-        return nan("");  // Changed from 0 to NaN
+        return nan("");
     }
     double data = _top->getData();
     Node<double>* temp = _top;

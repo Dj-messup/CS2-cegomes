@@ -5,16 +5,16 @@ class Node
 {
     private:
         T1 _data;
-        Node<T1>* _prev;  // Add this back
+        Node<T1>* _prev;
         Node<T1>* _next;
 
     public:
-        Node();  // Changed to match skeleton
+        Node();
         void setData(T1);
-        void setPrev(Node<T1>*);  // Add this back
+        void setPrev(Node<T1>*);
         void setNext(Node<T1>*);
         T1 getData();
-        Node<T1>* getPrev();  // Add this back
+        Node<T1>* getPrev();
         Node<T1>* getNext();
 };
 
@@ -24,6 +24,7 @@ Node<T1>::Node()
     _prev = nullptr;
     _next = nullptr;
 }
+
 template <class T1>
 void Node<T1>::setData(T1 data)
 {
