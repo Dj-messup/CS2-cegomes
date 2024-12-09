@@ -5,6 +5,8 @@ using namespace std;
 Creates the Game object
 Very simple, just starts everything */
 
+/*im sucky at presentations*/
+
 // Get player's flag choice
 string getFlagChoice() {
     string choice;

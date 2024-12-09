@@ -3,7 +3,7 @@
 /*All game mechanics
 Main game loop 
 Contains all the actual game code until void Game:: run
-Void Game:: run() deals with game loop combal movement and items*/
+Void Game:: run() deals with game loop combat movement and items*/
 
 // Constructor - Initialize the game with player's flag choice
 Game::Game(string flag) : playerHealth(100), flagChoice(flag) {
@@ -12,7 +12,7 @@ Game::Game(string flag) : playerHealth(100), flagChoice(flag) {
 
 // Destructor - Clean up memory when game ends
 Game::~Game() {
-    // Delete rooms
+    // Delete linked of list in rooms
     Room* current = currentRoom;
     while (current != nullptr) {
         Room* next = current->getNextRoom();
@@ -167,7 +167,8 @@ void Game::run() {
             if (selectedOption == "Fight enemy") {
                 Enemy* enemy = currentRoom->getEnemy();
                 
-                // Calculate damage with weapons
+                // Calculate damage with weapons, 
+                //sums damage from all weapons in the inventory during combat
                 int damage = 20;  // Base damage
                 for (Item* item : inventory) {
                     if (item->getIsWeapon()) {
