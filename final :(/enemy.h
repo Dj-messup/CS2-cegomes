@@ -1,6 +1,8 @@
 #pragma once
 #include <string>
 using namespace std;
+/* fills out an enemy card, says what enemies should have
+and what they can do*/
 
 class Enemy {
 private:

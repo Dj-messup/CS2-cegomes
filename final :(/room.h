@@ -3,6 +3,7 @@
 #include "item.h"
 #include <string>
 using namespace std;
+/*says what a room needs and what CAN do as a blueprint*/
 
 class Room {
 private:

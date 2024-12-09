@@ -1,5 +1,6 @@
-// item.cpp
 #include "item.h"
+/* filling out an item tag, name? etc.. 
+makes items actually work*/
 
 // Constructor: set up a new item
 Item::Item(string n, int amount, string desc, bool weapon) 

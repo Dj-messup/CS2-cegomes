@@ -1,7 +1,9 @@
-// item.h
 #pragma once
 #include <string>
 using namespace std;
+/*handles an item tag, shows what an item needs to have
+how much it heals, how much damage it adds
+shows the item description.. says what an item can do*/
 
 class Item {
 private:

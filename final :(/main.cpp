@@ -1,6 +1,9 @@
 #include "game.h"
 #include <iostream>
 using namespace std;
+/*greets player, gets initial choices
+Creates the Game object
+Very simple, just starts everything */
 
 // Get player's flag choice
 string getFlagChoice() {

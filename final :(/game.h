@@ -2,6 +2,10 @@
 #include "room.h"
 #include <vector>
 using namespace std;
+/*Blueprint for the game class
+Tells other files what game can do
+Defines the structure what things the game 
+class will have and what it can do*/
 
 class Game {
 private:

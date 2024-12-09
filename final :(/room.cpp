@@ -1,7 +1,9 @@
 #include "room.h"
 #include <iostream>
+/*says what a room needs and what 
+CAN do and does those things, is the constructor */
 
-// Constructor: create a new room
+//create a new room
 Room::Room(string desc) 
     : description(desc), enemy(nullptr), item(nullptr), nextRoom(nullptr) {}
 

@@ -1,5 +1,9 @@
 #include "game.h"
 #include <iostream>
+/*All game mechanics
+Main game loop 
+Contains all the actual game code until void Game:: run
+Void Game:: run() deals with game loop combal movement and items*/
 
 // Constructor - Initialize the game with player's flag choice
 Game::Game(string flag) : playerHealth(100), flagChoice(flag) {

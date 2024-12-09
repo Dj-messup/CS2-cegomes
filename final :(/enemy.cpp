@@ -1,5 +1,6 @@
 #include "enemy.h"
 #include <iostream>
+/* handles fighting and damage and makes enemies actually work*/
 
 // Constructor: set up a new enemy
 Enemy::Enemy(string n, int h, int d, string desc) 
